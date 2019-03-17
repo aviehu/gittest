@@ -3,14 +3,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-// import Card from "@material-ui/core/Card";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
@@ -29,6 +21,12 @@ function App({ classes }) {
 
   return (
     <div className={classes.root}>
+      <img
+        style={{ position: "absolute", right: 12, top: 12 }}
+        src="/2880px-LiveU_logo.svg.png"
+        alt="live u logo"
+        height="40px"
+      />
       {/* <Paper className={classes.paper} paddingBottom> */}
       <Grid container spacing={24} alignItems="center">
         <Grid item md={12} sm={12} xs={12}>
