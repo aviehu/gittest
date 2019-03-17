@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import withRoot from "./withRoot";
 import SimpleCard from "./SimpleCard";
+import Feed from "./Feed";
 
 const styles = theme => ({
   root: {
@@ -29,26 +30,54 @@ function App({ classes }) {
   return (
     <div className={classes.root}>
       {/* <Paper className={classes.paper} paddingBottom> */}
-      <Typography variant="h4" gutterBottom>
-        Cameras
-      </Typography>
       <Grid container spacing={24} alignItems="center">
-        <Grid item md={3}>
+        <Grid item md={12} sm={12} xs={12}>
+          <Typography variant="h4" gutterBottom>
+            Cameras
+          </Typography>
+        </Grid>
+        <Grid item md={3} xs={12}>
           <SimpleCard i="1" />
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={3} xs={12}>
           <SimpleCard i="2" />
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={3} xs={12}>
           <SimpleCard i="3" />
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={3} xs={12}>
           <SimpleCard i="4" />
         </Grid>
-        <Grid item md={3}>
-          <SimpleCard i="5" />
+        <Grid item md={6} sm={6} xs={12}>
+          <Typography variant="h4" gutterBottom>
+            OBD
+          </Typography>
+          <Typography color="textSecondary">
+            <span>Speed (kph):</span>&nbsp;45
+          </Typography>
+          <Typography color="textSecondary">
+            <span>RPM:</span>&nbsp;100
+          </Typography>
+          <Typography color="textSecondary">
+            <span>Fuel:</span>&nbsp;45%
+          </Typography>
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <Typography variant="h4" gutterBottom>
+            GPS
+          </Typography>
+          <Typography color="textSecondary">
+            <span>X:</span>&nbsp;40.7600000
+          </Typography>
+          <Typography color="textSecondary">
+            <span>Y:</span>&nbsp;-73.9840000
+          </Typography>
+          <Typography color="textSecondary">
+            <span>Z:</span>&nbsp;0.1300000
+          </Typography>
         </Grid>
       </Grid>
+      <Feed />
       {/* </Paper> */}
       {/* <Grid item xs={6}>
           <Paper className={classes.paper}>

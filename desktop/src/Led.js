@@ -7,7 +7,8 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = {
   badge: {
     position: "relative",
-    transform: "none"
+    transform: "none",
+    top: "-2px"
   },
   colorPrimary: {
     backgroundColor: "#4caf50"
@@ -25,4 +26,4 @@ Led.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Badge);
+export default withStyles(styles)(Led);

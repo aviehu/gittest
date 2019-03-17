@@ -34,18 +34,19 @@ function SimpleCard(props) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Camera {i}
-        </Typography>
-        <Typography component="h3" padding="12px">
+        <Typography variant="h5" component="h2" gutterBottom>
           <Led color={i % 2 ? "primary" : "secondary"} />
-          &nbsp;&nbsp;{i % 2 ? "Active" : "Link Cut"}
+          &nbsp;&nbsp;Camera {i}
         </Typography>
-        <Typography component="h3">1024 x 768</Typography>
-        <Typography component="h3">24fps</Typography>
+        <Typography color="textSecondary">
+          <span>Resolution:</span>&nbsp;1024 x 768
+        </Typography>
+        <Typography color="textSecondary">
+          <span>FPS:</span>&nbsp;24fps
+        </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">color={i % 2 ? "Turn Off" : "Turn On"}</Button>
+        <Button size="small">{i % 2 ? "Turn Off" : "Turn On"}</Button>
       </CardActions>
     </Card>
   );
