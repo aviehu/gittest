@@ -8,7 +8,8 @@ import { blue, red, grey, yellow } from "@material-ui/core/colors";
 import { LoremIpsum } from "lorem-ipsum";
 
 const drawerHeight = 240;
-const shade = 200;
+const shade = 200; // dark theme
+// const shade = 500; // light theme
 
 const styles = {
   root: { overflow: "auto", height: drawerHeight, flexShrink: 0 },

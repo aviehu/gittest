@@ -103,10 +103,10 @@ function App({ classes }) {
         >
           <Grid item md={3} xs={12}>
             <Card className={classes.card}>
-              <Typography variant="h5" component="h2" gutterBottom>
-                OBD
-              </Typography>
               <CardContent>
+                <Typography variant="h5" component="h2" gutterBottom>
+                  OBD
+                </Typography>
                 <Typography color="textSecondary">
                   <span>Speed (kph):</span>&nbsp;45
                 </Typography>
