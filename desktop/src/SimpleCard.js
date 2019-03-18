@@ -11,8 +11,9 @@ import Led from "./Led";
 
 const styles = {
   card: {
-    minWidth: 275,
-    maxWidth: 275
+    minWidth: 200,
+    maxWidth: 275,
+    margin: "auto"
   },
   bullet: {
     display: "inline-block",
@@ -24,6 +25,10 @@ const styles = {
   },
   pos: {
     marginBottom: 12
+  },
+  actions: {
+    display: "flex",
+    flexDirection: "row-reverse"
   }
 };
 
@@ -38,14 +43,10 @@ function SimpleCard(props) {
           <Led color={i % 2 ? "primary" : "secondary"} />
           &nbsp;&nbsp;Camera {i}
         </Typography>
-        <Typography color="textSecondary">
-          <span>Resolution:</span>&nbsp;1024 x 768
-        </Typography>
-        <Typography color="textSecondary">
-          <span>FPS:</span>&nbsp;24fps
-        </Typography>
+        <Typography color="textSecondary">Resolution: 1024 x 768</Typography>
+        <Typography color="textSecondary">FPS: 24fps</Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.actions}>
         <Button size="small">{i % 2 ? "Turn Off" : "Turn On"}</Button>
       </CardActions>
     </Card>
@@ -56,5 +57,37 @@ SimpleCard.propTypes = {
   classes: PropTypes.object.isRequired,
   i: PropTypes.number.isRequired
 };
+
+// function render(props) {
+//   return (
+//     <div>
+//       <Button channel="toggleEngine" clickAction="toggle">
+//         <Led channel="engineStatus" />
+//         <Label>Engine</Label>
+//       </Button>
+//       <Button channel="leftButton" mouseDownAction="startLeft" mouseUpAction="stopLeft">
+//         <Label>Left</Label>
+//       </Button>
+//       <Button channel="rightButton" mouseDownAction="startRight" mouseUpAction="stopRight">
+//         <Label>Right</Label>
+//       </Button>
+//       <Card channel="camera1">
+//         <Title>
+//           <Led channelProperty="active" colors={{ 0: "secondary", 1: "primary" }} />
+//           <Label>Camera 1</Label>
+//         </Title>
+//         <Label channelProperty="resolution" render={i => `Resolution: ${i}`} />
+//         <Label channelProperty="fps" render={i => `FPS: ${i}`} />
+//         <Button clickAction="toggle">
+//           <Label channelProperty="active" render={i => (i === 1 ? "Turn Off" : "Turn on")} />
+//         </Button>
+//       </Card>
+//     </div>
+//   );
+// }
+
+// const topLevelProps = {
+
+// }
 
 export default withStyles(styles)(SimpleCard);

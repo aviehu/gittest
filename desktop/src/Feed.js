@@ -4,8 +4,11 @@ import _ from "lodash/fp";
 import React from "react";
 import PropTypes from "prop-types";
 import { Drawer, Typography, withStyles } from "@material-ui/core";
+import { blue, red, grey, yellow } from "@material-ui/core/colors";
+import { LoremIpsum } from "lorem-ipsum";
 
 const drawerHeight = 240;
+const shade = 200;
 
 const styles = {
   root: { overflow: "auto", height: drawerHeight, flexShrink: 0 },
@@ -33,8 +36,28 @@ const styles = {
     "&::-webkit-scrollbar-thumb:hover": {
       background: "#555"
     }
+  },
+  debug: {
+    color: grey[shade + 200]
+  },
+  info: {
+    color: blue[shade]
+  },
+  warn: {
+    color: yellow[shade]
+  },
+  error: {
+    color: red[shade]
   }
 };
+
+const classifications = ["debug", "info", "warn", "error"];
+const lorem = new LoremIpsum({
+  wordsPerSentence: {
+    max: 16,
+    min: 4
+  }
+});
 
 function Feed(props) {
   const { classes } = props;
@@ -46,7 +69,13 @@ function Feed(props) {
       classes={{ paper: classes.paper }}
     >
       <Typography variant="body2">
-        {_.flatMap(i => [`Log ${i}`, <br />])(_.range(50, 0))}
+        {_.flatMap(i => [
+          <span>{new Date().toISOString()} </span>,
+          <span className={classes[classifications[i % 4]]}>
+            {_.toUpper(classifications[i % 4])} {lorem.generateSentences(1)}
+          </span>,
+          <br />
+        ])(_.range(50, 0))}
       </Typography>
     </Drawer>
   );

@@ -1,15 +1,7 @@
 // eslint-disable-next-line unicorn/filename-case
 import React from "react";
-import { MuiThemeProvider, createMuiTheme, withStyles } from "@material-ui/core/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
-const styles = () => ({
-  "@global": {
-    body: {
-      margin: "12px" // Overrides <CssBaseline/>
-    }
-  }
-});
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -35,7 +27,7 @@ function withRoot(Component) {
     );
   }
 
-  return withStyles(styles)(WithRoot);
+  return WithRoot;
 }
 
 export default withRoot;

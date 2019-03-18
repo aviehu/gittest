@@ -10,6 +10,8 @@
 
 # production
 /build
+React\ App_files
+React\ App.html
 
 # misc
 .DS_Store
