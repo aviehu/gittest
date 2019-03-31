@@ -8,10 +8,17 @@ import { blue, red, grey, yellow } from "@material-ui/core/colors";
 import { LoremIpsum } from "lorem-ipsum";
 
 const drawerHeight = 240;
-const shade = 200; // dark theme
-// const shade = 500; // light theme
+const shades = { dark: 200, light: 500 };
 
-const styles = {
+function getShade(theme) {
+  if (shades[theme.palette.type]) {
+    return shades[theme.palette.type];
+  }
+
+  return shades.light;
+}
+
+const styles = theme => ({
   root: { overflow: "auto", height: drawerHeight, flexShrink: 0 },
   paper: {
     height: drawerHeight,
@@ -39,18 +46,18 @@ const styles = {
     }
   },
   debug: {
-    color: grey[shade + 200]
+    color: grey[getShade(theme) + 200]
   },
   info: {
-    color: blue[shade]
+    color: blue[getShade(theme)]
   },
   warn: {
-    color: yellow[shade]
+    color: yellow[getShade(theme)]
   },
   error: {
-    color: red[shade]
+    color: red[getShade(theme)]
   }
-};
+});
 
 const classifications = ["debug", "info", "warn", "error"];
 const lorem = new LoremIpsum({

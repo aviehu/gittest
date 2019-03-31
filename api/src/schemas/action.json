@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "action",
+  "type": "object",
+  "properties": {
+    "operatorId": {
+      "description": "The userid of the operator.",
+      "type": "string",
+      "format": "regex",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "source": {
+      "description": "The source from which this action is being published - hardcoded to PubUi",
+      "type": "string",
+      "format": "regex",
+      "pattern": "^PubUi$"
+    },
+    "channel": {
+      "description": "The channel to which the action is happening on.",
+      "type": "string",
+      "format": "regex",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "action": {
+      "description": "The action being sent",
+      "type": "string",
+      "format": "regex",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "data": {
+      "description": "All fields sent with that action. It's a Map<String, String>",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}
