@@ -4,10 +4,9 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = () => ({
   card: {
-      marginBottom: theme.spacing.unit * 2,
-      width: '100%',
+    width: '100%'
   },
   textField: {
     width: '100%'
