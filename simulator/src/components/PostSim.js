@@ -36,7 +36,7 @@ function PostSim({ classes }) {
           <PayloadFormCard value={payload} onChange={setPayload} />
         </Grid>
         <Grid item xs={6}>
-            <PayloadDataPreview value={payload.data} />
+          <PayloadDataPreview value={payload.data} />
         </Grid>
       </Grid>
     </div>

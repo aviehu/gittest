@@ -24,40 +24,31 @@ function PayloadFormCard({ onChange, value, classes }) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <form>
-          <TextField
-            id="channel"
-            label="channel"
-            className={classes.textField}
-            value={value.channel}
-            onChange={event => onChange({ ...value, channel: event.target.value })}
-            margin="normal"
-          />
-          <TextField
-            id="callback"
-            label="Callback URL"
-            className={classes.textField}
-            value={value.url}
-            onChange={event => onChange({ ...value, url: event.target.value })}
-            margin="normal"
-          />
-          <TextField
-            id="event"
-            label="Event"
-            className={classes.textField}
-            value={value.event}
-            onChange={event => onChange({ ...value, event: event.target.value })}
-            margin="normal"
-          />
-          <TextField
-            className={classes.textField}
-            id="dataString"
-            label="Data"
-            multiline
-            value={dataString}
-            onChange={onChangeDataString}
-          />
-        </form>
+        <TextField
+          label="channel"
+          className={classes.textField}
+          value={value.channel}
+          onChange={event => onChange({ ...value, channel: event.target.value })}
+        />
+        <TextField
+          label="Callback URL"
+          className={classes.textField}
+          value={value.url}
+          onChange={event => onChange({ ...value, url: event.target.value })}
+        />
+        <TextField
+          label="Event"
+          className={classes.textField}
+          value={value.event}
+          onChange={event => onChange({ ...value, event: event.target.value })}
+        />
+        <TextField
+          className={classes.textField}
+          label="Data"
+          multiline
+          value={dataString}
+          onChange={onChangeDataString}
+        />
       </CardContent>
     </Card>
   );
