@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -9,14 +10,24 @@ const styles = () => ({
     width: '100%'
   },
   textField: {
-    width: '100%'
+    display: 'flex',
+    flex: 1,
+    marginLeft: 20
+  },
+  cardContent: {
+    display: 'flex',
+    alignItems: 'baseline',
+    justifyContent: 'space-between'
   }
 });
 
-function TargetUrlCard({ onChange, value, classes }) {
+function TargetUrlCard({ onChange, value, classes, post }) {
   return (
     <Card className={classes.card}>
-      <CardContent>
+      <CardContent className={classes.cardContent}>
+        <Button color="primary" variant="contained" onClick={post}>
+          Publish
+        </Button>
         <TextField
           id="url"
           label="Target URL"

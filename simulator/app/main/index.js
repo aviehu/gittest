@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const express = require('./server');
 
 require('fix-path')();
 
@@ -56,5 +57,6 @@ app.on('activate', () => {
 
 // Create main BrowserWindow when electron is ready
 app.on('ready', () => {
+  express();
   mainWindow = createMainWindow();
 });
