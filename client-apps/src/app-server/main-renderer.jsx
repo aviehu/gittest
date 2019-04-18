@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { promisify } from 'util';
+import { VM } from 'vm2';
 
 import { transform } from '@babel/core';
 import React from 'react';
@@ -10,10 +11,18 @@ import App from '../main-client/src/app';
 
 const clientCodeBuilder = reactElement => `window.__TEMPLATE__ = ${reactElement}`;
 
-global.React = React;
-
 const transformAsync = promisify(transform);
 const readFileAsync = promisify(fs.readFile);
+
+function run(reactElementCode) {
+  const vm = new VM({
+    sandbox: {
+      React
+    }
+  });
+
+  return vm.run(reactElementCode);
+}
 
 export default async function render() {
   const template = `<div>hi</div>`;
@@ -23,7 +32,6 @@ export default async function render() {
   const clientCode = (await transformAsync(clientCodeBuilder(template))).code;
 
   const script = `<script type="text/javascript">${clientCode}</script>`;
-  const element = eval(reactElement); // eslint-disable-line no-eval
 
-  return reactRender(htmlFile, <App element={element} />, script);
+  return reactRender(htmlFile, <App element={run(reactElement)} />, script);
 }
