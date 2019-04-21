@@ -1,6 +1,7 @@
 module.exports = {
   collectCoverageFrom: [
-    "**/lib/**/*.{js,jsx}",
+    "**/src/**/*.{js,jsx}",
+    "!**/src/index.js",
     "!**/fixtures/**",
     "!**/data/**",
     "!**/test/**",
