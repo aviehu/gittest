@@ -43,7 +43,7 @@ const styles = theme => ({
   }
 });
 
-function login(email, password) {
+function login(password) {
   fetch('/login', {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, cors, *same-origin
@@ -55,7 +55,7 @@ function login(email, password) {
     },
     redirect: 'manual', // manual, *follow, error
     referrer: 'no-referrer', // no-referrer, *client
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ password })
   }).then(response => {
     if (response.ok) {
       window.location = '/';
@@ -64,7 +64,6 @@ function login(email, password) {
 }
 
 function App({ classes }) {
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   return (
@@ -79,25 +78,13 @@ function App({ classes }) {
         </Typography>
         <div className={classes.form}>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input
-              id="email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={({ target: { value } }) => {
-                setEmail(value);
-              }}
-            />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input
               name="password"
               type="password"
               id="password"
               autoComplete="current-password"
+              autoFocus
               value={password}
               onChange={({ target: { value } }) => {
                 setPassword(value);
@@ -109,7 +96,7 @@ function App({ classes }) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => login(email, password)}
+            onClick={() => login(password)}
           >
             Sign in
           </Button>
