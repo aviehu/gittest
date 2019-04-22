@@ -3,6 +3,7 @@ const EventEmitter = require('events');
 const uuidv1 = require('uuid').v1;
 const fetch = require('node-fetch');
 const waitForExpect = require('wait-for-expect');
+const wrapWebsocketServer = require('../src/websocket-server/wrap-websocket-server');
 const buildClientGatewayServer = require('../src/clientGatewayServer');
 const { getAllSubscribers, clearAllSubscribers } = require('../src/subscribers');
 const cache = require('../src/cache');
@@ -13,6 +14,10 @@ function buildWs() {
   const socket = new EventEmitter();
   socket.terminate = () => {
     socket.emit('close');
+  };
+  socket.ping = () => {
+    // eslint-disable-next-line no-console
+    console.info('ping');
   };
 
   socket.send = jest.fn();
@@ -33,7 +38,7 @@ function buildWss() {
     server.emit('connection', socket);
     return socket;
   };
-  return server;
+  return wrapWebsocketServer(server);
 }
 
 describe('client gateway server', () => {

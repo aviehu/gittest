@@ -1,12 +1,12 @@
 const { get: getEnv } = require('env-var');
-const WebSocket = require('ws');
+const websocketServer = require('./websocket-server');
 const buildClientGateway = require('./clientGatewayServer');
 const buildIngestServer = require('./ingestServer');
 
 const ingestPort = getEnv('INGEST_PORT', '8000').asString();
 const clientGatewayPort = getEnv('CLIENT_GATEWAY_PORT', '9001').asString();
 
-const wss = new WebSocket.Server({ port: clientGatewayPort });
+const wss = websocketServer({ port: clientGatewayPort });
 buildClientGateway(wss);
 
 const ingestServer = buildIngestServer({ swagger: true, port: ingestPort });
