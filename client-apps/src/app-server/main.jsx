@@ -9,8 +9,6 @@ import reactRender from './renderer';
 
 import App from '../main-client/src/app';
 
-const clientCodeBuilder = reactElement => `window.__TEMPLATE__ = ${reactElement}`;
-
 const readFileAsync = promisify(fs.readFile);
 
 function run(reactElementCode) {
@@ -26,8 +24,15 @@ function run(reactElementCode) {
 async function render(templateFilePath) {
   const template = (await readFileAsync(templateFilePath)).toString();
   const htmlFile = (await readFileAsync('./dist/index.html')).toString();
-  const reactElement = (await transformAsync(template)).code;
-  const clientCode = (await transformAsync(clientCodeBuilder(template))).code;
+
+  const babelConfig = {
+    configFile: false,
+    presets: ['@babel/preset-react']
+  };
+
+  const reactElement = (await transformAsync(template, babelConfig)).code;
+
+  const clientCode = `window.__TEMPLATE__ = ${reactElement}`;
 
   const script = `<script type="text/javascript">${clientCode}</script>`;
 

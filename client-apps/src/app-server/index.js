@@ -7,9 +7,10 @@ import loginSetup from './login';
 import mainSetup from './main';
 
 const app = fastify({
-  // logger: {
-  //   level: 'trace'
-  // }
+  logger: {
+    level: 'error',
+    prettyPrint: true
+  }
 });
 
 app.register(fastifyStatic, {
