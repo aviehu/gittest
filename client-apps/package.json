@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf dist",
-    "lint": "eslint --ext js --ext jsx .",
+    "lint": "eslint .",
     "build:login": "webpack -p --config src/login-client/webpack.config.js",
     "build:main": "webpack -p --config src/main-client/webpack.config.js",
     "build:server": "babel src --out-dir dist/app",

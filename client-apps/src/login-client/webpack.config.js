@@ -9,7 +9,7 @@ module.exports = {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   context: APP_DIR,
-  entry: `./${process.env.ENTRY || 'index'}.jsx`,
+  entry: `./${process.env.ENTRY || 'index'}.js`,
   output: {
     path: BUILD_DIR,
     filename: 'login.js'

@@ -25,6 +25,8 @@ module.exports = {
     'react/jsx-indent': [2, 2],
     'class-methods-use-this': ['off'],
     'react/prop-types': ['off'],
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-filename-extension": 0,
     'complexity': ['error', 6],
     'max-depth': ['error', { max: 2 }],
     'max-lines': ['error', 120],
