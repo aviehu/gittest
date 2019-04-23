@@ -1,26 +1,26 @@
 import crypto from 'crypto';
-import fs from 'fs';
+import { promises as fs } from 'fs';
 
+import env from 'env-var';
 import fastifyCookie from 'fastify-cookie';
+import fastifyPlugin from 'fastify-plugin';
 import React from 'react';
 
 import reactRender from './renderer';
 import App from '../login-client/src/app';
 
-const USER_FILE_PATH = process.env.USER_FILE_PATH || './dev-files/users.json';
+const USER_FILE_PATH = env.get('USER_FILE_PATH', './dev-files/users.json').asString();
 
-function render() {
-  return new Promise(resolve => {
-    fs.readFile('./dist/login.html', (error, data) => {
-      resolve(reactRender(data.toString(), <App />));
-    });
-  });
+async function render() {
+  const html = await fs.readFile('./dist/login.html');
+
+  return reactRender(html, <App />);
 }
 
-export default function setup(app) {
+export default fastifyPlugin(async (app, options, next) => {
   app.register(fastifyCookie);
 
-  const users = JSON.parse(fs.readFileSync(USER_FILE_PATH));
+  const users = JSON.parse(await fs.readFile(USER_FILE_PATH));
 
   app.get('/login', async (request, reply) => {
     const data = await render();
@@ -47,16 +47,9 @@ export default function setup(app) {
 
   app.decorate('getUser', request => request.cookies && request.cookies.cred && users[request.cookies.cred]);
 
-  app.decorate('checkAuth', (request, reply) => {
-    if (request.cookies && request.cookies.cred) {
-      const hashedPassword = request.cookies.cred;
-
-      if (users[hashedPassword]) {
-        return true;
-      }
-    }
-
+  app.decorate('requireAuth', (request, reply) => {
     reply.redirect('/login');
-    return false;
   });
-}
+
+  next();
+});

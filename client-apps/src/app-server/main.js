@@ -1,15 +1,13 @@
-import fs from 'fs';
-import { promisify } from 'util';
+import { promises as fs } from 'fs';
 
 import { transformAsync } from '@babel/core';
+import fastifyPlugin from 'fastify-plugin';
 import React from 'react';
 import { VM } from 'vm2';
 
 import reactRender from './renderer';
 
 import App from '../main-client/src/app';
-
-const readFileAsync = promisify(fs.readFile);
 
 function run(reactElementCode) {
   const vm = new VM({
@@ -22,8 +20,8 @@ function run(reactElementCode) {
 }
 
 async function render(templateFilePath) {
-  const template = (await readFileAsync(templateFilePath)).toString();
-  const htmlFile = (await readFileAsync('./dist/index.html')).toString();
+  const template = await fs.readFile(templateFilePath);
+  const htmlFile = await fs.readFile('./dist/index.html');
 
   const babelConfig = {
     configFile: false,
@@ -39,18 +37,21 @@ async function render(templateFilePath) {
   return reactRender(htmlFile, <App element={run(reactElement)} />, script);
 }
 
-export default function setup(app) {
+export default fastifyPlugin((app, options, next) => {
   app.get('/', async (request, reply) => {
-    if (!app.checkAuth(request, reply)) {
+    const user = app.getUser(request);
+
+    if (!user) {
+      app.requireAuth(request);
       return;
     }
 
-    const templateFilePath = app.getUser(request);
-
-    const data = await render(templateFilePath);
+    const data = await render(user);
 
     reply.header('Content-Type', 'text/html');
 
     reply.send(data);
   });
-}
+
+  next();
+});
