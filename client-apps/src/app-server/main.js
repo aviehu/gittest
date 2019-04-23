@@ -42,7 +42,7 @@ export default fastifyPlugin((app, options, next) => {
     const user = app.getUser(request);
 
     if (!user) {
-      app.requireAuth(request);
+      app.requireAuth(request, reply);
       return;
     }
 
