@@ -1,3 +1,3 @@
-import React from 'react';
+export { default as React } from 'react';
 
-window.React = React;
+export { default as Button } from '@material-ui/core/Button'; // test

@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { promises as fs } from 'fs';
 
 import env from 'env-var';
@@ -33,13 +32,8 @@ export default fastifyPlugin(async (app, options, next) => {
   app.post('/login', async (request, reply) => {
     const { password } = request.body;
 
-    const hash = crypto.createHash('sha512');
-
-    hash.update(password);
-    const hashedPassword = hash.digest('hex');
-
-    if (users[hashedPassword]) {
-      reply.setCookie('cred', hashedPassword);
+    if (users[password]) {
+      reply.setCookie('cred', password);
     }
 
     reply.send();

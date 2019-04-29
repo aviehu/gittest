@@ -8,12 +8,11 @@ import { VM } from 'vm2';
 import reactRender from './renderer';
 
 import App from '../main-client/src/app';
+import * as globals from '../main-client/src/globals';
 
 function run(reactElementCode) {
   const vm = new VM({
-    sandbox: {
-      React
-    }
+    sandbox: globals
   });
 
   return vm.run(reactElementCode);
