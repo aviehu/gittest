@@ -41,6 +41,14 @@ function buildWss() {
   return wrapWebsocketServer(server);
 }
 
+function sentJson(socket, idx) {
+  if (socket.send.mock.calls[idx] == null) {
+    return undefined;
+  }
+
+  return JSON.parse(socket.send.mock.calls[idx][0]);
+}
+
 describe('client gateway server', () => {
   let server;
 
@@ -64,10 +72,14 @@ describe('client gateway server', () => {
       channel: 'ch1'
     };
 
-    socket.emit('message', message);
+    socket.emit('message', JSON.stringify(message));
 
     expect(socket.send).toHaveBeenCalledTimes(1);
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: message.id, type: 'ack' });
+    expect(sentJson(socket, 0)).toEqual({
+      id: expect.any(String),
+      reqId: message.id,
+      type: 'ack'
+    });
     expect(getAllSubscribers()).toEqual({ ch1: { [socket.id]: socket } });
   });
 
@@ -81,27 +93,33 @@ describe('client gateway server', () => {
       channel: 'ch1'
     };
 
-    socket.emit('message', message);
+    socket.emit('message', JSON.stringify(message));
 
     expect(socket.send).toHaveBeenCalledTimes(2);
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: message.id, type: 'ack' });
-    expect(socket.send).toHaveBeenCalledWith(ch1Message);
+    expect(sentJson(socket, 0)).toEqual({ id: expect.any(String), reqId: message.id, type: 'ack' });
+    expect(sentJson(socket, 1)).toEqual(ch1Message);
     expect(getAllSubscribers()).toEqual({ ch1: { [socket.id]: socket } });
   });
   it('should handle be able to unsubscribe', () => {
     const socket = server.connect();
 
-    socket.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch1'
-    });
+    socket.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
 
-    socket.emit('message', {
-      id: uuidv1(),
-      type: 'unsubscribe',
-      channel: 'ch1'
-    });
+    socket.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'unsubscribe',
+        channel: 'ch1'
+      })
+    );
 
     expect(socket.send).toHaveBeenCalledTimes(2);
     expect(getAllSubscribers()).toEqual({ ch1: {} });
@@ -111,36 +129,54 @@ describe('client gateway server', () => {
     const socket2 = server.connect();
     const socket3 = server.connect();
 
-    socket1.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch1'
-    });
-    socket1.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch2'
-    });
-    socket1.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch3'
-    });
-    socket2.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch3'
-    });
-    socket3.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch1'
-    });
-    socket3.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch3'
-    });
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch2'
+      })
+    );
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+    socket2.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+    socket3.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
+    socket3.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
 
     expect(socket1.send).toHaveBeenCalledTimes(3);
     expect(socket2.send).toHaveBeenCalledTimes(1);
@@ -151,7 +187,7 @@ describe('client gateway server', () => {
       ch3: { [socket1.id]: socket1, [socket2.id]: socket2, [socket3.id]: socket3 }
     });
 
-    socket1.emit('message', { id: uuidv1(), type: 'unsubscribeAll' });
+    socket1.emit('message', JSON.stringify({ id: uuidv1(), type: 'unsubscribeAll' }));
     expect(socket1.send).toHaveBeenCalledTimes(4);
     expect(getAllSubscribers()).toEqual({
       ch1: { [socket3.id]: socket3 },
@@ -165,36 +201,54 @@ describe('client gateway server', () => {
     const socket2 = server.connect();
     const socket3 = server.connect();
 
-    socket1.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch1'
-    });
-    socket1.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch2'
-    });
-    socket1.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch3'
-    });
-    socket2.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch3'
-    });
-    socket3.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch1'
-    });
-    socket3.emit('message', {
-      id: uuidv1(),
-      type: 'subscribe',
-      channel: 'ch3'
-    });
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch2'
+      })
+    );
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+    socket2.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+    socket3.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
+    socket3.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
 
     expect(socket1.send).toHaveBeenCalledTimes(3);
     expect(socket2.send).toHaveBeenCalledTimes(1);
@@ -231,24 +285,26 @@ describe('client gateway server', () => {
       channel: 'car',
       action: 'stop',
       data: {
-        timeout: 10
+        timeout: '10'
       }
     };
 
-    socket.emit('message', subscribeMessage);
-    socket.emit('message', actionMessage);
+    socket.emit('message', JSON.stringify(subscribeMessage));
+    socket.emit('message', JSON.stringify(actionMessage));
 
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: actionMessage.id, type: 'ack' });
+    expect(sentJson(socket, 0)).toEqual({
+      id: expect.any(String),
+      reqId: subscribeMessage.id,
+      type: 'ack'
+    });
+    expect(sentJson(socket, 1)).toEqual({ id: expect.any(String), reqId: actionMessage.id, type: 'ack' });
 
     await waitForExpect(() =>
-      expect(socket.send.mock.calls[2]).toEqual([
-        {
-          id: expect.any(String),
-          reqId: actionMessage.id,
-          type: 'success'
-        }
-      ])
+      expect(sentJson(socket, 2)).toEqual({
+        id: expect.any(String),
+        reqId: actionMessage.id,
+        type: 'success'
+      })
     );
     expect(socket.send).toHaveBeenCalledTimes(3);
 
@@ -272,13 +328,13 @@ describe('client gateway server', () => {
       channel: 'car',
       action: 'stop',
       data: {
-        timeout: 10
+        timeout: '10'
       }
     };
 
-    socket.emit('message', actionMessage);
+    socket.emit('message', JSON.stringify(actionMessage));
 
-    expect(socket.send).toHaveBeenCalledWith({
+    expect(sentJson(socket, 0)).toEqual({
       id: expect.any(String),
       reqId: actionMessage.id,
       type: 'invalid',
@@ -308,11 +364,11 @@ describe('client gateway server', () => {
       }
     };
 
-    socket.emit('message', subscribeMessage);
-    socket.emit('message', actionMessage);
+    socket.emit('message', JSON.stringify(subscribeMessage));
+    socket.emit('message', JSON.stringify(actionMessage));
 
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
-    expect(socket.send).toHaveBeenCalledWith({
+    expect(sentJson(socket, 0)).toEqual({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
+    expect(sentJson(socket, 1)).toEqual({
       id: expect.any(String),
       reqId: actionMessage.id,
       type: 'invalid',
@@ -345,25 +401,23 @@ describe('client gateway server', () => {
       channel: 'car',
       action: 'stop',
       data: {
-        timeout: 10
+        timeout: '10'
       }
     };
 
-    socket.emit('message', subscribeMessage);
-    socket.emit('message', actionMessage);
+    socket.emit('message', JSON.stringify(subscribeMessage));
+    socket.emit('message', JSON.stringify(actionMessage));
 
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: actionMessage.id, type: 'ack' });
+    expect(sentJson(socket, 0)).toEqual({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
+    expect(sentJson(socket, 1)).toEqual({ id: expect.any(String), reqId: actionMessage.id, type: 'ack' });
 
     await waitForExpect(() =>
-      expect(socket.send.mock.calls[2]).toEqual([
-        {
-          id: expect.any(String),
-          reqId: actionMessage.id,
-          type: 'error',
-          errors: '404 Not Found'
-        }
-      ])
+      expect(sentJson(socket, 2)).toEqual({
+        id: expect.any(String),
+        reqId: actionMessage.id,
+        type: 'error',
+        errors: '404 Not Found'
+      })
     );
     expect(socket.send).toHaveBeenCalledTimes(3);
 
@@ -392,25 +446,25 @@ describe('client gateway server', () => {
       channel: 'car',
       action: 'stop',
       data: {
-        timeout: 10
+        timeout: '10'
       }
     };
 
-    socket.emit('message', subscribeMessage);
-    socket.emit('message', actionMessage);
+    socket.emit('message', JSON.stringify(subscribeMessage));
+    socket.emit('message', JSON.stringify(actionMessage));
 
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
-    expect(socket.send).toHaveBeenCalledWith({ id: expect.any(String), reqId: actionMessage.id, type: 'ack' });
+    expect(sentJson(socket, 0)).toEqual({ id: expect.any(String), reqId: subscribeMessage.id, type: 'ack' });
+    expect(sentJson(socket, 1)).toEqual({ id: expect.any(String), reqId: actionMessage.id, type: 'ack' });
 
-    await waitForExpect(() =>
-      expect(socket.send.mock.calls[2]).toEqual([
-        {
+    await waitForExpect(
+      () =>
+        expect(sentJson(socket, 2)).toEqual({
           id: expect.any(String),
           reqId: actionMessage.id,
           type: 'error',
           errors: 'UNKNOWN_LIVEU_SERVER_ERROR'
-        }
-      ])
+        }),
+      5000
     );
     expect(socket.send).toHaveBeenCalledTimes(3);
 

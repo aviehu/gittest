@@ -24,5 +24,11 @@
     "nodemon": "^1.18.11",
     "prettier": "^1.17.0",
     "wait-for-expect": "^1.1.1"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "lint": "eslint .",
+    "start": "NODE_ENV=production node src/index.js",
+    "start:dev": "nodemon --watch src --watch node_modules --exec node src/index.js"
   }
 }
