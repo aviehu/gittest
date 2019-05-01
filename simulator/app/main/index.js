@@ -12,7 +12,7 @@ let mainWindow;
 function createMainWindow() {
   // Construct new BrowserWindow
   const window = new BrowserWindow({
-    title: `Heatmap`,
+    title: `Simulator`,
     width: 800,
     height: 600
   });

@@ -4,12 +4,15 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = () => ({
+import MultiTextField from './MultiTextField';
+
+const styles = theme => ({
   card: {
     width: '100%'
   },
   textField: {
-    width: '100%'
+    width: '100%',
+    marginBottom: theme.spacing.unit * 2
   }
 });
 
@@ -41,6 +44,18 @@ function BodyFormCard({ onChange, value, classes }) {
           className={classes.textField}
           value={value.event}
           onChange={event => onChange({ ...value, event: event.target.value })}
+        />
+        <MultiTextField
+          label="Actions"
+          className={classes.textField}
+          value={value.actions}
+          onChange={actions => onChange({ ...value, actions })}
+        />
+        <TextField
+          label="Source"
+          className={classes.textField}
+          value={value.source}
+          onChange={event => onChange({ ...value, source: event.target.value })}
         />
         <TextField
           className={classes.textField}

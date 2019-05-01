@@ -10,8 +10,8 @@ export default function readBody() {
       actions: ['change']
     };
   }
-  return JSON.parse({
-    ...payloadBackup,
+  return {
+    ...JSON.parse(payloadBackup),
     id: Date.now()
-  });
+  };
 }

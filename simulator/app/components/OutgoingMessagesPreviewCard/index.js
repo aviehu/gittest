@@ -28,8 +28,8 @@ function IncomingMessagesPreviewCard({ messages, classes }) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {messages.reverse().map(({ url, body, id, timestamp }) => (
-          <TableRow key={id}>
+        {messages.reverse().map(({ url, body, timestamp }) => (
+          <TableRow key={body.id}>
             <TableCell>
               <Typography>
                 {new Date(timestamp).toLocaleString('default', {
