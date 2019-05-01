@@ -10,7 +10,7 @@ const cache = require('./cache');
 
 const actionSchema = require('./schemas/action.json');
 const singleChannelSchema = require('./schemas/single-channel.json');
-// const multiChannelSchema = require('./schemas/multi-channel.json');
+const multiChannelSchema = require('./schemas/multi-channel.json');
 
 function buildServer(wss) {
   wss.on('connection', ws => {
@@ -22,19 +22,22 @@ function buildServer(wss) {
     return cache.get(message.channel);
   });
 
-  // wss.recv('subscribeMany', { schema: multiChannelSchema, sendAck: true }, (message, ws) => {
-  //   addSubscriber(ws, message);
-  //   return cache.get(message.channel);
-  // });
+  wss.recv('subscribeMany', { schema: multiChannelSchema, sendAck: true }, (message, ws) => {
+    return _.compact(
+      _.map(channel => {
+        addSubscriber(ws, channel);
+        return cache.get(channel);
+      }, message.channels)
+    );
+  });
 
   wss.recv('unsubscribe', { schema: singleChannelSchema, sendAck: true }, (message, ws) => {
     return removeSubscriber(ws, message.channel);
   });
 
-  // recv('unsubscribeMany', { schema: multiChannelSchema, sendAck: true }, (message, ws) => {
-  //   removeSubscriber(ws, message);
-  //   return cache.get(message.channel);
-  // });
+  wss.recv('unsubscribeMany', { schema: multiChannelSchema, sendAck: true }, (message, ws) => {
+    return _.compact(_.map(channel => removeSubscriber(ws, channel), message.channels));
+  });
 
   wss.recv('unsubscribeAll', { sendAck: true }, (message, ws) => {
     return removeAllSubscriptions(ws);

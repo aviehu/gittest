@@ -120,6 +120,55 @@ describe('client gateway server', () => {
     expect(sentJson(socket, 1)).toEqual(ch1Message);
     expect(getAllSubscribers()).toEqual({ ch1: { [socket.id]: socket } });
   });
+
+  it('should handle subscribeMany', () => {
+    const socket = server.connect();
+    const message = {
+      id: uuidv1(),
+      type: 'subscribeMany',
+      channels: ['ch1', 'ch2', 'ch3']
+    };
+
+    socket.emit('message', JSON.stringify(message));
+
+    expect(socket.send).toHaveBeenCalledTimes(1);
+    expect(sentJson(socket, 0)).toEqual({
+      id: expect.any(String),
+      reqId: message.id,
+      type: 'ack'
+    });
+    expect(getAllSubscribers()).toEqual({
+      ch1: { [socket.id]: socket },
+      ch2: { [socket.id]: socket },
+      ch3: { [socket.id]: socket }
+    });
+  });
+
+  it('should handle subscibeMany & send from cache for some of the channels', () => {
+    const socket = server.connect();
+    const ch1Message = { id: uuidv1(), channel: 'ch1', event: 'ev1', data: { a: 1, b: 2 } };
+    const ch2Message = _.assign({}, ch1Message, { channel: 'ch2' });
+    cache.set('ch1', ch1Message);
+    cache.set('ch3', ch2Message);
+    const message = {
+      id: uuidv1(),
+      type: 'subscribeMany',
+      channels: ['ch1', 'ch2', 'ch3']
+    };
+
+    socket.emit('message', JSON.stringify(message));
+
+    expect(socket.send).toHaveBeenCalledTimes(3);
+    expect(sentJson(socket, 0)).toEqual({ id: expect.any(String), reqId: message.id, type: 'ack' });
+    expect(sentJson(socket, 1)).toEqual(ch1Message);
+    expect(sentJson(socket, 2)).toEqual(ch2Message);
+    expect(getAllSubscribers()).toEqual({
+      ch1: { [socket.id]: socket },
+      ch2: { [socket.id]: socket },
+      ch3: { [socket.id]: socket }
+    });
+  });
+
   it('should handle be able to unsubscribe', () => {
     const socket = server.connect();
 
@@ -144,6 +193,79 @@ describe('client gateway server', () => {
     expect(socket.send).toHaveBeenCalledTimes(2);
     expect(getAllSubscribers()).toEqual({ ch1: {} });
   });
+
+  it('should handle be able to unsubscribeMany', () => {
+    const socket1 = server.connect();
+    const socket2 = server.connect();
+    const socket3 = server.connect();
+
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch2'
+      })
+    );
+    socket1.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+    socket2.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+    socket3.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch1'
+      })
+    );
+    socket3.emit(
+      'message',
+      JSON.stringify({
+        id: uuidv1(),
+        type: 'subscribe',
+        channel: 'ch3'
+      })
+    );
+
+    expect(socket1.send).toHaveBeenCalledTimes(3);
+    expect(socket2.send).toHaveBeenCalledTimes(1);
+    expect(socket3.send).toHaveBeenCalledTimes(2);
+    expect(getAllSubscribers()).toEqual({
+      ch1: { [socket1.id]: socket1, [socket3.id]: socket3 },
+      ch2: { [socket1.id]: socket1 },
+      ch3: { [socket1.id]: socket1, [socket2.id]: socket2, [socket3.id]: socket3 }
+    });
+
+    socket1.emit('message', JSON.stringify({ id: uuidv1(), type: 'unsubscribeMany', channels: ['ch1', 'ch2'] }));
+    expect(socket1.send).toHaveBeenCalledTimes(4);
+    expect(getAllSubscribers()).toEqual({
+      ch1: { [socket3.id]: socket3 },
+      ch2: {},
+      ch3: { [socket1.id]: socket1, [socket2.id]: socket2, [socket3.id]: socket3 }
+    });
+  });
+
   it('should handle be able to unsubscribeAll', () => {
     const socket1 = server.connect();
     const socket2 = server.connect();
