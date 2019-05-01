@@ -103,9 +103,16 @@ function buildMessageHandler(ws, messageType, { validator, sendAck }, handler) {
       }
 
       const unwrappedResponse = response.then != null ? await response : response;
-      if (unwrappedResponse != null) {
-        ws.sendJson(unwrappedResponse);
+      if (unwrappedResponse == null) {
+        return;
       }
+
+      if (_.isArray(unwrappedResponse)) {
+        _.forEach(res => ws.sendJson(res), unwrappedResponse);
+        return;
+      }
+
+      ws.sendJson(unwrappedResponse);
     } catch (error) {
       failed(ws, message, error);
     }
