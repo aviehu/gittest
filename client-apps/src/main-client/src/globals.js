@@ -1,3 +1,3 @@
 export { default as React } from 'react';
 
-export { default as Button } from '@material-ui/core/Button'; // test
+export { default as Label } from './components/label';

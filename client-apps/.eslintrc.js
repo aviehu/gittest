@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 6,
@@ -11,10 +12,10 @@ module.exports = {
   extends: [
     'airbnb',
     'prettier',
-    'prettier/unicorn',
-    'plugin:unicorn/recommended'
+    // 'prettier/unicorn',
+    // 'plugin:unicorn/recommended'
   ],
-  plugins: ['prettier', 'unicorn', 'import'],
+  plugins: ['prettier', 'import'],
   rules: {
     'jsx-a11y/href-no-hash': ['off'],
     indent: ['error', 2, { SwitchCase: 1, VariableDeclarator: 1, outerIIFEBody: 1 }],

@@ -66,7 +66,8 @@ function socketHandler(ws) {
     ws.messageEmitter.on(messageType, buildMessageHandler(ws, messageType, options, fn));
   })(messageHandlerConfigs);
 
-  ws.on('message', message => {
+  ws.on('message', messageStr => {
+    const message = JSON.parse(messageStr);
     if (ws.messageEmitter.listenerCount(message.type) < 1) {
       notFound(ws, message);
       return;
