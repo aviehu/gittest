@@ -71,7 +71,13 @@ function socketHandler(ws) {
     ws.messageEmitter.on(messageType, buildMessageHandler(ws, messageType, options, fn));
   })(messageHandlerConfigs);
 
-  ws.on('message', message => {
+  ws.on('message', messageStr => {
+    const message = JSON.parse(messageStr);
+    if (message.type == null) {
+      invalid(ws, message, [{ message: `should have required property 'type'` }]);
+      return;
+    }
+
     if (ws.messageEmitter.listenerCount(message.type) < 1) {
       notFound(ws, message);
       return;
