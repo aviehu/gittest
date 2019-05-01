@@ -62,6 +62,11 @@ function socketHandler(ws) {
   // eslint-disable-next-line no-param-reassign
   ws.messageEmitter = new EventEmitter();
 
+  // eslint-disable-next-line no-param-reassign
+  ws.sendJson = function(val) {
+    ws.send(JSON.stringify(val));
+  };
+
   _.forEach(({ messageType, options, fn }) => {
     ws.messageEmitter.on(messageType, buildMessageHandler(ws, messageType, options, fn));
   })(messageHandlerConfigs);
@@ -99,7 +104,7 @@ function buildMessageHandler(ws, messageType, { validator, sendAck }, handler) {
 
       const unwrappedResponse = response.then != null ? await response : response;
       if (unwrappedResponse != null) {
-        ws.send(unwrappedResponse);
+        ws.sendJson(unwrappedResponse);
       }
     } catch (error) {
       failed(ws, message, error);
