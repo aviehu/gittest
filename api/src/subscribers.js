@@ -2,7 +2,7 @@ const _ = require('lodash/fp');
 
 const subscribers = {};
 
-function addSubscriber(ws, { channel }) {
+function addSubscriber(ws, channel) {
   if (subscribers[channel] == null) {
     subscribers[channel] = {};
   }
@@ -10,7 +10,7 @@ function addSubscriber(ws, { channel }) {
   subscribers[channel][ws.id] = ws;
 }
 
-function removeSubscriber(ws, { channel }) {
+function removeSubscriber(ws, channel) {
   if (subscribers[channel] == null) {
     return;
   }
@@ -18,7 +18,7 @@ function removeSubscriber(ws, { channel }) {
   delete subscribers[channel][ws.id];
 }
 
-function isSubscribed(ws, { channel }) {
+function isSubscribed(ws, channel) {
   return subscribers[channel] && subscribers[channel][ws.id] && true;
 }
 

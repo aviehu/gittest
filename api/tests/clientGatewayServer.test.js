@@ -64,6 +64,26 @@ describe('client gateway server', () => {
     fetch.mockClear();
   });
 
+  it('should validate subscribe', () => {
+    const socket = server.connect();
+    const message = {
+      id: uuidv1(),
+      type: 'subscribe',
+      channels: 'ch1'
+    };
+
+    socket.emit('message', JSON.stringify(message));
+
+    expect(socket.send).toHaveBeenCalledTimes(1);
+    expect(sentJson(socket, 0)).toEqual({
+      id: expect.any(String),
+      reqId: message.id,
+      type: 'invalid',
+      errors: [expect.objectContaining({ message: `should have required property 'channel'` })]
+    });
+    expect(getAllSubscribers()).toEqual({});
+  });
+
   it('should handle subscribe', () => {
     const socket = server.connect();
     const message = {
