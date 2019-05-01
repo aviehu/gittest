@@ -15,7 +15,7 @@ const styles = () => ({
   }
 });
 
-function PayloadDataPreview({ value, classes }) {
+function BodyDataPreview({ value, classes }) {
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -24,4 +24,4 @@ function PayloadDataPreview({ value, classes }) {
     </Card>
   );
 }
-export default withStyles(styles)(PayloadDataPreview);
+export default withStyles(styles)(BodyDataPreview);

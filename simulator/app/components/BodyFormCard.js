@@ -13,7 +13,7 @@ const styles = () => ({
   }
 });
 
-function PayloadFormCard({ onChange, value, classes }) {
+function BodyFormCard({ onChange, value, classes }) {
   const [dataString, setDataString] = useState(JSON.stringify(value.data, null, 2));
   function onChangeDataString(event) {
     setDataString(event.target.value);
@@ -53,4 +53,4 @@ function PayloadFormCard({ onChange, value, classes }) {
     </Card>
   );
 }
-export default withStyles(styles)(PayloadFormCard);
+export default withStyles(styles)(BodyFormCard);

@@ -11,6 +11,13 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true
+  },
+  overrides: {
+    MuiTab: {
+      label: {
+        color: 'white'
+      }
+    }
   }
 });
 

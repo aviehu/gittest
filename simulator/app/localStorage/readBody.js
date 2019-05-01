@@ -1,7 +1,8 @@
-export default function readPayload() {
-  const payloadBackup = localStorage.getItem('payload');
+export default function readBody() {
+  const payloadBackup = localStorage.getItem('body');
   if (!payloadBackup) {
     return {
+      id: Date.now(),
       channel: 'channel',
       url: 'http://localhost:8001/callback',
       event: 'change',
@@ -9,5 +10,8 @@ export default function readPayload() {
       actions: ['change']
     };
   }
-  return JSON.parse(payloadBackup);
+  return JSON.parse({
+    ...payloadBackup,
+    id: Date.now()
+  });
 }
