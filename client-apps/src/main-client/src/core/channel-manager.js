@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import uuid from 'uuid/v4';
+import { useRef, useState } from 'react';
+
+import createSocket from './socket-wrapper';
 
 export default function useChannelManager() {
   const socketRef = useRef();
@@ -7,13 +8,10 @@ export default function useChannelManager() {
 
   async function addChannel(name) {
     const socket = await socketRef.current;
-    socket.send(
-      JSON.stringify({
-        id: uuid(),
-        type: 'subscribe',
-        channel: name
-      })
-    );
+    await socket.send({
+      type: 'subscribe',
+      channel: name
+    });
 
     setValue(v => ({
       ...v,
@@ -21,7 +19,7 @@ export default function useChannelManager() {
     }));
   }
 
-  function updateChannel(name, channelData) {
+  function updateChannel(name, channelData, channelActions) {
     setValue(v => ({
       ...v,
       [name]: channelData
@@ -35,27 +33,11 @@ export default function useChannelManager() {
     }));
   }
 
-  socketRef.current = new Promise(resolve => {
-    useEffect(() => {
-      const socket = new WebSocket('ws://localhost:8080');
+  function onMessage(msg) {
+    updateChannel(msg.channel, msg.data, msg.actions);
+  }
 
-      socket.onerror = event => {
-        console.log('err', event);
-      };
-
-      socket.onmessage = event => {
-        console.log('msg', event);
-      };
-
-      socket.onopen = () => {
-        resolve(socket);
-      };
-
-      return () => {
-        socket.close();
-      };
-    }, []);
-  });
+  socketRef.current = createSocket('ws://localhost:8080', onMessage);
 
   return [value, addChannel, removeChannel, updateChannel];
 }
