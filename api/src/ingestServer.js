@@ -73,7 +73,7 @@ function buildServer({ swagger = false, port } = {}) {
     reply.send('ok');
 
     cache.set(channel, request.body);
-    forEach(subscriber => subscriber.send(request.body))(getSubscribers(channel));
+    forEach(subscriber => subscriber.sendJson(request.body))(getSubscribers(channel));
   });
 
   process.on('SIGINT', async () => {
