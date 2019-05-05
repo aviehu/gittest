@@ -14,12 +14,14 @@ export default async function createSocket(url, onMessage, onError = () => {}) {
           return;
         }
 
+        clearTimeout(req.timeoutId);
+
         if (msg.type === 'ack') {
           req.resolve();
         }
 
-        if (msg.type === 'notFound' || msg.type === 'timeout') {
-          req.reject();
+        if (msg.type === 'notFound' || msg.type === 'timeout' || msg.type === 'invalid') {
+          req.reject(msg.errors);
         }
 
         delete requests[msg.reqId];
@@ -32,7 +34,7 @@ export default async function createSocket(url, onMessage, onError = () => {}) {
       socket.onmessage = e => {
         const msg = JSON.parse(e.data);
 
-        if (msg.type === 'ack' || msg.type === 'notFound') {
+        if (msg.type === 'ack' || msg.type === 'notFound' || msg.type === 'invalid') {
           handleResponse(msg);
           return;
         }
@@ -45,11 +47,11 @@ export default async function createSocket(url, onMessage, onError = () => {}) {
           const id = uuid();
 
           return new Promise((resolve, reject) => {
-            requests[id] = { resolve, reject };
-
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
               handleResponse({ reqId: id, type: 'timeout' });
             }, 3000);
+
+            requests[id] = { resolve, reject, timeoutId };
 
             socket.send(JSON.stringify({ ...message, id }));
           });

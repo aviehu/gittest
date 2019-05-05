@@ -2,6 +2,12 @@ import { useRef, useState } from 'react';
 
 import createSocket from './socket-wrapper';
 
+const actionsMap = {
+  click_action: {
+    domEvent: 'onClick'
+  }
+};
+
 export default function useChannelManager() {
   const socketRef = useRef();
   const [value, setValue] = useState({});
@@ -19,10 +25,10 @@ export default function useChannelManager() {
     }));
   }
 
-  function updateChannel(name, channelData, channelActions) {
+  function updateChannel(name, channelData, channelEvents) {
     setValue(v => ({
       ...v,
-      [name]: channelData
+      [name]: { ...channelData, ...channelEvents }
     }));
   }
 
@@ -34,7 +40,27 @@ export default function useChannelManager() {
   }
 
   function onMessage(msg) {
-    updateChannel(msg.channel, msg.data, msg.actions);
+    const events = msg.actions.reduce((acc, action) => {
+      const event = actionsMap[action];
+
+      acc[event.domEvent] = async () => {
+        const socket = await socketRef.current;
+        const actionMessage = {
+          type: 'action',
+          url: msg.callback,
+          channel: msg.channel,
+          source: 'PubUi',
+          operatorId: 'PubUi-master',
+          action
+        };
+
+        await socket.send(actionMessage);
+      };
+
+      return acc;
+    }, {});
+
+    updateChannel(msg.channel, msg.data, events);
   }
 
   socketRef.current = createSocket('ws://localhost:8080', onMessage);

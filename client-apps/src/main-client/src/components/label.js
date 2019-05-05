@@ -7,9 +7,9 @@ import { useBoundChannel } from '../context';
 const styles = () => ({});
 
 function Button(props) {
-  const { children, onClick } = useBoundChannel(props);
+  const channelProps = useBoundChannel(props);
 
-  return <button onClick={onClick}>{children}</button>;
+  return <button {...channelProps} />;
 }
 
 export default withStyles(styles)(Button);
