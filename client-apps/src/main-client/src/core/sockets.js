@@ -19,7 +19,11 @@ function createSocketWrapper(socket) {
     const id = uuid();
 
     return new Promise((resolve, reject) => {
-      requests[id] = { resolve, reject };
+      const timeoutId = setTimeout(() => {
+        handler._handleResponse({ reqId: id, type: 'timeout' });
+      }, 3000);
+
+      requests[id] = { resolve, reject, timeoutId };
 
       setTimeout(() => {
         handler._handleResponse({ reqId: id, type: 'timeout' });
@@ -36,14 +40,15 @@ function createSocketWrapper(socket) {
       return;
     }
 
+    clearTimeout(req.timeoutId);
     delete requests[msg.reqId];
 
     if (msg.type === 'ack') {
       req.resolve();
     }
 
-    if (msg.type === 'notFound' || msg.type === 'timeout') {
-      req.reject();
+    if (msg.type === 'notFound' || msg.type === 'timeout' || msg.type === 'invalid') {
+      req.reject(msg.errors);
     }
   };
   handler.onChannel = async function onChannel(channel, fn) {
@@ -88,7 +93,7 @@ function createSocket(
     socket.onmessage = e => {
       const msg = JSON.parse(e.data);
 
-      if (msg.type === 'ack' || msg.type === 'notFound') {
+      if (msg.type === 'ack' || msg.type === 'notFound' || msg.type === 'invalid') {
         wrapper._handleResponse(msg);
         return;
       }
