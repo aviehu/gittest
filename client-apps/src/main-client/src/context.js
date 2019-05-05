@@ -18,7 +18,8 @@ function Provider({ children }) {
   return <Context.Provider value={{ subscribe, ...channels }}>{children}</Context.Provider>;
 }
 
-export function useBoundChannel({ channel }) {
+export function useBoundChannel(props) {
+  const { channel } = props;
   const context = useContext(Context);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export function useBoundChannel({ channel }) {
     };
   }, []);
 
-  return context[channel] || {};
+  return { ...props, ...context[channel] };
 }
 
 export default {
