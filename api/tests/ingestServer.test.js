@@ -37,7 +37,7 @@ describe('ingest server', () => {
       headers: { Accept: 'application/json' }
     });
     expect(response.statusCode).toEqual(200);
-    expect(cache.get('video')).toEqual(payload);
+    expect(cache.get('video')).toEqual({ ...payload, type: 'forward' });
   });
   it('should save valid data into a cache on one channel and forward onto any subscribers', async () => {
     const sockets = _.map(() => ({ id: uuidv1(), sendJson: jest.fn() }))(_.range(0, 3));
@@ -54,13 +54,13 @@ describe('ingest server', () => {
       headers: { Accept: 'application/json' }
     });
     expect(response.statusCode).toEqual(200);
-    expect(cache.get('video')).toEqual(payload);
+    expect(cache.get('video')).toEqual({ ...payload, type: 'forward' });
     await sleep(200);
     expect(sockets[0].sendJson).toHaveBeenCalledTimes(1);
-    expect(sockets[0].sendJson).toHaveBeenCalledWith(payload);
+    expect(sockets[0].sendJson).toHaveBeenCalledWith({ ...payload, type: 'forward' });
     expect(sockets[1].sendJson).toHaveBeenCalledTimes(0);
     expect(sockets[2].sendJson).toHaveBeenCalledTimes(1);
-    expect(sockets[2].sendJson).toHaveBeenCalledWith(payload);
+    expect(sockets[2].sendJson).toHaveBeenCalledWith({ ...payload, type: 'forward' });
   });
   it('should override the cache if a new message is sent on a channel & channel data should be separated in the cache', async () => {
     const videoDatas = [{ fps: '30', resolution: '1200x800', c: 'd' }, { fps: '25', resolution: '1200x800', c: 'e' }];
@@ -96,7 +96,7 @@ describe('ingest server', () => {
 
     _.forEach(r => expect(r.statusCode).toEqual(200), responses);
 
-    expect(cache.get('video')).toEqual(payloads[2]);
-    expect(cache.get('car')).toEqual(payloads[4]);
+    expect(cache.get('video')).toEqual({ ...payloads[2], type: 'forward' });
+    expect(cache.get('car')).toEqual({ ...payloads[4], type: 'forward' });
   });
 });

@@ -12,7 +12,7 @@ const actionSchema = require('./schemas/action.json');
 const singleChannelSchema = require('./schemas/single-channel.json');
 const multiChannelSchema = require('./schemas/multi-channel.json');
 
-function buildServer(wss) {
+function buildServer(wss, log) {
   wss.on('connection', ws => {
     ws.on('close', () => removeAllSubscriptions(ws));
   });
@@ -50,9 +50,12 @@ function buildServer(wss) {
     }
 
     ack(ws, message);
+
+    const body = _.omit(['type'], message);
+    log.info(`ACTION: ${JSON.stringify(body)} to ${message.url}`);
     const response = await fetch(message.url, {
       method: 'post',
-      body: JSON.stringify(_.omit(['type'], message)),
+      body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' }
     });
     if (response.ok) {
@@ -61,6 +64,8 @@ function buildServer(wss) {
       failed(ws, message, response);
     }
   });
+
+  log.info(`Websocket server listening on ${wss.options.port}`);
 }
 
 module.exports = buildServer;
