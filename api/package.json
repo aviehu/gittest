@@ -29,6 +29,8 @@
   "scripts": {
     "clean": "rm -rf dist",
     "lint": "eslint .",
+    "test": "jest",
+    "test:ci": "jest --coverage",
     "start": "NODE_ENV=production node src/index.js",
     "start:dev": "nodemon --watch src --watch node_modules --exec node src/index.js"
   }
