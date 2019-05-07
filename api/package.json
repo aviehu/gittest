@@ -5,7 +5,6 @@
   "private": true,
   "dependencies": {
     "ajv": "^6.10.0",
-    "await-sleep": "^0.0.1",
     "env-var": "^4.0.0",
     "fastify": "^2.2.0",
     "fastify-sensible": "^2.0.1",
@@ -16,6 +15,7 @@
     "ws": "^6.2.1"
   },
   "devDependencies": {
+    "await-sleep": "^0.0.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
