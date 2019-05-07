@@ -61,6 +61,6 @@ export default async function createSocket(url, onMessage, onError = () => {}) {
       socket.onopen = () => {
         socketResolve(handler);
       };
-    });
+    }, []);
   });
 }
