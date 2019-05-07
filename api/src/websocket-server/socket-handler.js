@@ -48,7 +48,7 @@ function configureSocketHandler(log, messageHandlerConfigs) {
     });
 
     ws.on('close', () => {
-      log.info({ websocket: ws.id, type: 'connect' });
+      log.info({ websocket: ws.id, type: 'close' });
     });
 
     log.info({ websocket: ws.id, type: 'connect' });
