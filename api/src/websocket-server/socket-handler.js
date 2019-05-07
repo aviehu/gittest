@@ -22,7 +22,7 @@ function configureSocketHandler(log, messageHandlerConfigs) {
     ws.messageEmitter = new EventEmitter();
 
     // eslint-disable-next-line no-param-reassign
-    ws.sendJson = function(val) {
+    ws.sendJson = function sendJson(val) {
       log.info({ websocket: ws.id, json: val, type: 'send' });
       ws.send(JSON.stringify(val));
     };
