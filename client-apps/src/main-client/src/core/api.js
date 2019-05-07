@@ -16,7 +16,7 @@ async function unsubscribe(channel, fn) {
   socket.offChannel(channel, fn);
 }
 
-async function action(channel, actionName, url, data = {}) {
+async function dispatch(channel, actionName, url, data = {}) {
   const socket = await createOrGetSocket();
   await socket.send({
     url,
@@ -27,4 +27,4 @@ async function action(channel, actionName, url, data = {}) {
   });
 }
 
-export { subscribe, unsubscribe, action };
+export { subscribe, unsubscribe, dispatch };

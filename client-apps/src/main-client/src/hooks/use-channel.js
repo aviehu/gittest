@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { subscribe, unsubscribe } from '../core/api';
+import { dispatch, subscribe, unsubscribe} from '../core/api';
 
 export default function useChannel({ channel }) {
   const [channelData, setChannelData] = useState({
@@ -8,9 +8,20 @@ export default function useChannel({ channel }) {
     url: 'http://localhost:8080'
   });
 
+  function handleSubscription(data) {
+    console.log(`useChannel update received`);
+
+    function sendAction(action) {
+      console.log(`Sending action ${channel}.${action} to ${data.callback}`);
+      return dispatch(channel, action, data.callback);
+    }
+
+    setChannelData({ ...data, sendAction });
+  }
+
   useEffect(() => {
-    subscribe(channel, setChannelData);
-    return () => unsubscribe(channel, setChannelData);
+    subscribe(channel, handleSubscription);
+    return () => unsubscribe(channel, handleSubscription);
   }, [channel]);
 
   return channelData;
