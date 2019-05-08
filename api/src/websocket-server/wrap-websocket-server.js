@@ -1,21 +1,18 @@
 const _ = require('lodash/fp');
-const EventEmitter = require('events');
-const uuidv1 = require('uuid/v1');
 const Ajv = require('ajv');
-const notFound = require('./messages/notFound');
-const invalid = require('./messages/invalid');
-const ack = require('./messages/ack');
-const failed = require('./messages/failed');
+const configureSocketHandler = require('./socket-handler');
 
 const messageHandlerConfigs = [];
 
-function wrapWebsocketServer(wss, { socketPingRate, socketTimeout } = {}) {
+function wrapWebsocketServer(wss, { socketPingRate, socketTimeout, log } = {}) {
   const ajv = new Ajv({
     removeAdditional: true,
     useDefaults: true, // replace missing properties and items with the values from corresponding default keyword
     coerceTypes: true, // change data type of data to match type keyword
     allErrors: true
   });
+
+  const socketHandler = configureSocketHandler(log, messageHandlerConfigs);
 
   wss.on('connection', socketHandler);
 
@@ -46,65 +43,6 @@ function wrapWebsocketServer(wss, { socketPingRate, socketTimeout } = {}) {
   };
 
   return wss;
-}
-
-function socketHandler(ws) {
-  // eslint-disable-next-line no-param-reassign
-  ws.id = uuidv1();
-  // eslint-disable-next-line no-param-reassign
-  ws.lastPing = Date.now();
-
-  ws.on('pong', () => {
-    // eslint-disable-next-line no-param-reassign
-    ws.lastPing = Date.now();
-  });
-
-  // eslint-disable-next-line no-param-reassign
-  ws.messageEmitter = new EventEmitter();
-
-  _.forEach(({ messageType, options, fn }) => {
-    ws.messageEmitter.on(messageType, buildMessageHandler(ws, messageType, options, fn));
-  })(messageHandlerConfigs);
-
-  ws.on('message', message => {
-    if (ws.messageEmitter.listenerCount(message.type) < 1) {
-      notFound(ws, message);
-      return;
-    }
-
-    ws.messageEmitter.emit(message.type, message);
-  });
-
-  return ws;
-}
-
-function buildMessageHandler(ws, messageType, { validator, sendAck }, handler) {
-  // eslint-disable-next-line complexity
-  return async message => {
-    try {
-      if (validator && !validator(message)) {
-        invalid(ws, message, validator.errors);
-        return;
-      }
-
-      const response = handler(message, ws);
-
-      if (sendAck) {
-        ack(ws, message);
-      }
-
-      if (response == null) {
-        return;
-      }
-
-      const unwrappedResponse = response.then != null ? await response : response;
-      if (unwrappedResponse != null) {
-        ws.send(unwrappedResponse);
-      }
-    } catch (error) {
-      failed(ws, message, error);
-    }
-  };
 }
 
 module.exports = wrapWebsocketServer;
