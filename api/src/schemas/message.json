@@ -3,12 +3,6 @@
   "$id": "message",
   "type": "object",
   "properties": {
-    "id": {
-      "description": "The uuid for the message base64 encoded",
-      "type": "string",
-      "format": "regex",
-      "pattern": "^[a-zA-Z0-9_-]+$"
-    },
     "source": {
       "description": "The source from which this channel is being published. It can be a vehicle or server id. The same sort of source should all publish the same set of channels.",
       "type": "string",
@@ -44,6 +38,5 @@
       "type": "array",
       "items": { "type": "string", "format": "regex", "pattern": "^[a-z0-9_-]+$" }
     }
-  },
-  "required": ["id", "source", "channel", "event", "data"]
+  }
 }

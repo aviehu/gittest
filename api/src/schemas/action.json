@@ -3,17 +3,6 @@
   "$id": "action",
   "type": "object",
   "properties": {
-    "id": {
-      "description": "The uuid for the message base64 encoded",
-      "type": "string",
-      "format": "regex",
-      "pattern": "^[a-zA-Z0-9_-]+$"
-    },
-    "url": {
-      "description": "The uuid for the message base64 encoded",
-      "type": "string",
-      "format": "uri"
-    },
     "operatorId": {
       "description": "The userid of the operator.",
       "type": "string",
@@ -45,6 +34,5 @@
         "type": "string"
       }
     }
-  },
-  "required": ["id", "url", "operatorId", "source", "channel", "action"]
+  }
 }
