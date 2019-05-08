@@ -2,12 +2,10 @@ import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import Context from './context';
-
 const styles = () => ({});
 
 function App({ element }) {
-  return <Context.Provider>{element}</Context.Provider>;
+  return <div>{element}</div>;
 }
 
 export default withStyles(styles)(App);

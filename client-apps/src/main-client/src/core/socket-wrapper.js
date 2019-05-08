@@ -1,66 +1,133 @@
-import { useEffect } from 'react';
 import uuid from 'uuid/v4';
+import EventEmitter from 'eventemitter3';
 
-export default async function createSocket(url, onMessage, onError = () => {}) {
+let wrapper;
+
+const cache = {};
+function addToCache(key, data) {
+  cache[key] = data;
+}
+function deleteFromCache(key) {
+  delete cache[key];
+}
+
+function createOrGetSocket(url, onError) {
+  return getSocket() || createSocket(url, onError);
+}
+
+function getSocket() {
+  return wrapper;
+}
+
+function createSocketWrapper(socket) {
+  const requests = {};
+
+  const handler = new EventEmitter();
+  handler.send = function send(message) {
+    const id = uuid();
+
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        handler._handleResponse({ reqId: id, type: 'timeout' });
+      }, 3000);
+
+      requests[id] = { resolve, reject, timeoutId };
+
+      socket.send(JSON.stringify({ ...message, id, source: 'PubUi', operatorId: '123' }));
+    });
+  };
+  handler._handleResponse = function _handleResponse(msg) {
+    const req = requests[msg.reqId];
+
+    if (!req) {
+      console.error(`Couldn't handleResponse for missing request ${msg.reqId}`);
+      return;
+    }
+
+    clearTimeout(req.timeoutId);
+    delete requests[msg.reqId];
+
+    if (msg.type === 'ack') {
+      req.resolve();
+    }
+
+    if (msg.type === 'notFound' || msg.type === 'timeout' || msg.type === 'invalid') {
+      req.reject(msg.errors);
+    }
+  };
+
+  handler.onChannel = async function onChannel(channel, fn) {
+    if (handler.listenerCount(channel) > 0) {
+      handler.on(channel, fn);
+      if (cache[channel] != null) {
+        fn(cache[channel]);
+      }
+      return Promise.resolve('repeat subscription');
+    }
+
+    handler.on(channel, message => {
+      addToCache(channel, message);
+      fn(message);
+    });
+
+    return handler.send({
+      type: 'subscribe',
+      channel
+    });
+  };
+  handler.offChannel = async function offChannel(channel, fn) {
+    handler.off(channel, fn);
+    if (handler.listenerCount(channel) > 0) {
+      return Promise.resolve('repeat subscription');
+    }
+
+    deleteFromCache(channel);
+    return handler.send({
+      type: 'unsubscribe',
+      channel
+    });
+  };
+  return handler;
+}
+
+function createSocket(
+  url = 'ws://localhost:9001',
+  onError = error => {
+    console.error(error);
+  }
+) {
   return new Promise(socketResolve => {
-    useEffect(() => {
-      const socket = new WebSocket(url);
-      const requests = {};
+    const socket = new WebSocket(url);
+    wrapper = createSocketWrapper(socket);
 
-      function handleResponse(msg) {
-        const req = requests[msg.reqId];
+    socket.onerror = e => {
+      onError(e);
+    };
 
-        if (!req) {
-          return;
-        }
+    socket.onmessage = e => {
+      const msg = JSON.parse(e.data);
 
-        clearTimeout(req.timeoutId);
-
-        if (msg.type === 'ack') {
-          req.resolve();
-        }
-
-        if (msg.type === 'notFound' || msg.type === 'timeout' || msg.type === 'invalid') {
-          req.reject(msg.errors);
-        }
-
-        delete requests[msg.reqId];
+      if (msg.type === 'ack' || msg.type === 'notFound' || msg.type === 'invalid') {
+        wrapper._handleResponse(msg);
+        return;
       }
 
-      socket.onerror = e => {
-        onError(e);
-      };
+      if (msg.type === 'forward') {
+        wrapper.emit(msg.channel, msg);
+        return;
+      }
 
-      socket.onmessage = e => {
-        const msg = JSON.parse(e.data);
+      console.error(`message type unrecognised: ${JSON.stringify(msg)}`);
+    };
 
-        if (msg.type === 'ack' || msg.type === 'notFound' || msg.type === 'invalid') {
-          handleResponse(msg);
-          return;
-        }
+    socket.onclose = () => {
+      wrapper = null;
+    };
 
-        onMessage(msg);
-      };
-
-      const handler = {
-        send: message => {
-          const id = uuid();
-
-          return new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => {
-              handleResponse({ reqId: id, type: 'timeout' });
-            }, 3000);
-
-            requests[id] = { resolve, reject, timeoutId };
-
-            socket.send(JSON.stringify({ ...message, id }));
-          });
-        }
-      };
-
-      socket.onopen = () => {
-        socketResolve(handler);
-      };
-    }, []);
+    socket.onopen = () => {
+      socketResolve(wrapper);
+    };
   });
 }
+
+export { createSocket, getSocket, createOrGetSocket };
