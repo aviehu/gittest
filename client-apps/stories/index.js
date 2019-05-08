@@ -2,23 +2,35 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import Button from '../src/main-client/src/components/button';
 import Label from '../src/main-client/src/components/label';
-import Context from '../src/main-client/src/context';
+import Led from '../src/main-client/src/components/led';
+
+const defaultChannelData = {
+  data: { text: 'hello world', ledColor: false },
+  actions: ['punchIt'],
+  url: 'http://localhost:8080'
+};
 
 storiesOf('Button', module)
-  .addDecorator(story => <Context.Provider>{story()}</Context.Provider>)
   .add('with text', () => <Button channel="testChannel">Hello Button</Button>)
   .add('with emoji', () => (
-    <Button channel="ch">
+    <Button>
       <span role="img" aria-label="so cool">
         😀 😎 👍 💯
       </span>
     </Button>
   ))
-  .add('using render prop', () => <Button channel="testChannel" render={() => 'Bye Bye'} />)
-  .add('with message data', () => <Button channel="testChannel" render={({ data }) => data.text} />);
+  .add('with message data', () => (
+    <Button
+      channel="testChannel"
+      initialChannelMessage={defaultChannelData}
+      render={({ data }) => `Not ${data.text}`}
+    />
+  ))
+  .add('with message data and channelProperty', () => (
+    <Button channel="testChannel" channelProperty="text" initialChannelMessage={defaultChannelData} />
+  ));
 
 storiesOf('Label', module)
-  .addDecorator(story => <Context.Provider>{story()}</Context.Provider>)
   .add('with text', () => <Label channel="testChannel">Hello Button</Label>)
   .add('with emoji', () => (
     <Label channel="ch">
@@ -27,8 +39,42 @@ storiesOf('Label', module)
       </span>
     </Label>
   ))
-  .add('with message data', () => <Label channel="testChannel" render={({ data }) => data.text} />)
-  .add('with message data as title', () => <Label channel="testChannel" variant="h5" component="h2" gutterBottom render={({ data }) => data.text} />)
-  .add('with message data as secondary', () => <Label channel="testChannel" color="textSecondary">Nothing at all</Label>)
-  .add('with using title kind', () => <Label channel="testChannel" kind="title">Title</Label>)
-  .add('with using secondary kind', () => <Label channel="testChannel" kind="secondary">secondary</Label>)
+  .add('with message data', () => (
+    <Label channel="testChannel" initialChannelMessage={defaultChannelData} render={({ data }) => data.text} />
+  ))
+  .add('with message data as title', () => (
+    <Label
+      channel="testChannel"
+      variant="h5"
+      component="h2"
+      gutterBottom
+      initialChannelMessage={defaultChannelData}
+      render={({ data }) => data.text}
+    />
+  ))
+  .add('with message data as secondary', () => <Label color="textSecondary">Nothing at all</Label>);
+
+storiesOf('Led', module)
+  .add('with hard coded value', () => <Led color="primary" />)
+  // .add('with alternate colors & hard coded value', () => (
+  //   <Led
+  //     colorOptions={{ colorPrimary: { backgroundColor: '#FFC0CB' }, colorSecondary: { backgroundColor: '#244336' } }}
+  //     color="primary"
+  //   />
+  // ))
+  .add('with property picking the color', () => (
+    <Led
+      // colorOptions={{ colorPrimary: { backgroundColor: '#FFC0CB' }, colorSecondary: { backgroundColor: '#244336' } }}
+      channel="testChannel"
+      initialChannelMessage={defaultChannelData}
+      channelProperty="ledColor"
+    />
+  ))
+  .add('with condition picking the color', () => (
+    <Led
+      // colorOptions={{ colorPrimary: { backgroundColor: '#FFC0CB' }, colorSecondary: { backgroundColor: '#244336' } }}
+      channel="testChannel"
+      initialChannelMessage={defaultChannelData}
+      condition={({ data }) => data.text === 'hello world'}
+    />
+  ));
