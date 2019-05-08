@@ -26,6 +26,7 @@ function buildWs() {
 
 function buildWss() {
   const server = new EventEmitter();
+  server.options = { port: 'test' };
   server.clients = [];
   server.on('connection', socket => {
     server.clients.push(socket);
@@ -38,7 +39,15 @@ function buildWss() {
     server.emit('connection', socket);
     return socket;
   };
-  return wrapWebsocketServer(server);
+  return wrapWebsocketServer(server, { log: console });
+}
+
+function sentJson(socket, idx) {
+  if (socket.send.mock.calls[idx] == null) {
+    return undefined;
+  }
+
+  return JSON.parse(socket.send.mock.calls[idx][0]);
 }
 
 function sentJson(socket, idx) {
@@ -54,7 +63,7 @@ describe('client gateway server', () => {
 
   beforeAll(() => {
     server = buildWss();
-    buildClientGatewayServer(server);
+    buildClientGatewayServer(server, console);
   });
 
   beforeEach(() => {
