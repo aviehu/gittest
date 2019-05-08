@@ -3,6 +3,14 @@ import EventEmitter from 'eventemitter3';
 
 let wrapper;
 
+const cache = {};
+function addToCache(key, data) {
+  cache[key] = data;
+}
+function deleteFromCache(key) {
+  delete cache[key];
+}
+
 function createOrGetSocket(url, onError) {
   return getSocket() || createSocket(url, onError);
 }
@@ -51,23 +59,33 @@ function createSocketWrapper(socket) {
       req.reject(msg.errors);
     }
   };
+
   handler.onChannel = async function onChannel(channel, fn) {
-    handler.on(channel, fn);
-    if (handler.listenerCount(channel) > 1) {
+    if (handler.listenerCount(channel) > 0) {
+      handler.on(channel, fn);
+      if (cache[channel] != null) {
+        fn(cache[channel]);
+      }
       return Promise.resolve('repeat subscription');
     }
+
+    handler.on(channel, message => {
+      addToCache(channel, message);
+      fn(message);
+    });
 
     return handler.send({
       type: 'subscribe',
       channel
     });
   };
-  handler.offChannel = async function onChannel(channel, fn) {
+  handler.offChannel = async function offChannel(channel, fn) {
     handler.off(channel, fn);
     if (handler.listenerCount(channel) > 0) {
       return Promise.resolve('repeat subscription');
-    }
+    }s
 
+    deleteFromCache(channel);
     return handler.send({
       type: 'unsubscribe',
       channel
