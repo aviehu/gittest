@@ -50,14 +50,6 @@ function sentJson(socket, idx) {
   return JSON.parse(socket.send.mock.calls[idx][0]);
 }
 
-function sentJson(socket, idx) {
-  if (socket.send.mock.calls[idx] == null) {
-    return undefined;
-  }
-
-  return JSON.parse(socket.send.mock.calls[idx][0]);
-}
-
 describe('client gateway server', () => {
   let server;
 
