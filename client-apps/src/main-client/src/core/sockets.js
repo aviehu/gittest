@@ -33,13 +33,10 @@ function createSocketWrapper(socket) {
 
       requests[id] = { resolve, reject, timeoutId };
 
-      setTimeout(() => {
-        handler._handleResponse({ reqId: id, type: 'timeout' });
-      }, 3000);
-
       socket.send(JSON.stringify({ ...message, id, source: 'PubUi', operatorId: '123' }));
     });
   };
+
   handler._handleResponse = function _handleResponse(msg) {
     const req = requests[msg.reqId];
 
@@ -56,7 +53,9 @@ function createSocketWrapper(socket) {
     }
 
     if (msg.type === 'notFound' || msg.type === 'timeout' || msg.type === 'invalid') {
-      req.reject(msg.errors);
+      const error = new Error(`Websocket response for ${msg.reqId} is ${msg.type}`);
+      Object.assign(error, msg);
+      req.reject(error);
     }
   };
 
@@ -79,11 +78,12 @@ function createSocketWrapper(socket) {
       channel
     });
   };
+
   handler.offChannel = async function offChannel(channel, fn) {
     handler.off(channel, fn);
     if (handler.listenerCount(channel) > 0) {
       return Promise.resolve('repeat subscription');
-    }s
+    }
 
     deleteFromCache(channel);
     return handler.send({
@@ -91,6 +91,7 @@ function createSocketWrapper(socket) {
       channel
     });
   };
+
   return handler;
 }
 
@@ -100,9 +101,9 @@ function createSocket(
     console.error(error);
   }
 ) {
-  return new Promise(socketResolve => {
+  wrapper = new Promise(socketResolve => {
     const socket = new WebSocket(url);
-    wrapper = createSocketWrapper(socket);
+    const socketWrapper = createSocketWrapper(socket);
 
     socket.onerror = e => {
       onError(e);
@@ -112,12 +113,12 @@ function createSocket(
       const msg = JSON.parse(e.data);
 
       if (msg.type === 'ack' || msg.type === 'notFound' || msg.type === 'invalid') {
-        wrapper._handleResponse(msg);
+        socketWrapper._handleResponse(msg);
         return;
       }
 
       if (msg.type === 'forward') {
-        wrapper.emit(msg.channel, msg);
+        socketWrapper.emit(msg.channel, msg);
         return;
       }
 
@@ -129,9 +130,10 @@ function createSocket(
     };
 
     socket.onopen = () => {
-      socketResolve(wrapper);
+      socketResolve(socketWrapper);
     };
   });
+  return wrapper;
 }
 
 export { createSocket, getSocket, createOrGetSocket };

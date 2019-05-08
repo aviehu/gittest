@@ -19,13 +19,7 @@ const styles = {
 };
 
 function Led(props) {
-  const {
-    channel,
-    channelProperty,
-    initialChannelMessage,
-    condition,
-    ...materialProps
-  } = props;
+  const { channel, channelProperty, initialChannelMessage, condition, ...materialProps } = props;
   const { data, actions, basicValue } = useChannel(channel, channelProperty, initialChannelMessage);
 
   const selection = (condition && condition({ data, actions })) || basicValue ? 'primary' : 'secondary';

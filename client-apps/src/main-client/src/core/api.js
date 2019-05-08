@@ -5,26 +5,38 @@ async function subscribe(channel, fn) {
   if (channel == null) {
     return;
   }
-  socket.onChannel(channel, fn);
+  try {
+    await socket.onChannel(channel, fn);
+  } catch (error) {
+    console.error(error, `Error calling subscribe(${channel}): ${JSON.stringify(error.errors)}`);
+  }
 }
 
 async function unsubscribe(channel, fn) {
-  const socket = getSocket();
+  const socket = await getSocket();
   if (socket == null || channel == null) {
     return;
   }
-  socket.offChannel(channel, fn);
+  try {
+    socket.offChannel(channel, fn);
+  } catch (error) {
+    console.error(error, `Error calling unsubscribe(${channel}): ${JSON.stringify(error.errors)}`);
+  }
 }
 
 async function dispatch(channel, actionName, url, data = {}) {
   const socket = await createOrGetSocket();
-  await socket.send({
-    url,
-    type: 'action',
-    channel,
-    action: actionName,
-    data
-  });
+  try {
+    await socket.send({
+      url,
+      type: 'action',
+      channel,
+      action: actionName,
+      data
+    });
+  } catch (error) {
+    console.error(error, `Error calling dispatch(${channel}, ${actionName}, ${url}, ${data}): ${JSON.stringify(error.errors)}`);
+  }
 }
 
 export { subscribe, unsubscribe, dispatch };
