@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "multi-channel",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The uuid for the message base64 encoded",
+      "type": "string",
+      "format": "regex",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "channels": {
+      "type": "array",
+      "description": "The channels to which the client wants to subscribe/unsubscibe to.",
+      "items": {
+        "type": "string",
+        "format": "regex",
+        "pattern": "^[a-z0-9_-]+$"
+      }
+    }
+  },
+  "required": ["id", "channels"]
+}
