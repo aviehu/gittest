@@ -27,6 +27,7 @@
     "fastify-plugin": "^1.5.0",
     "fastify-static": "^2.4.0",
     "jss": "^9.8.7",
+    "lodash": "^4.17.11",
     "pino-pretty": "^2.6.1",
     "prop-types": "15.7.2",
     "react": "16.8.6",
