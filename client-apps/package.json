@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "client-apps",
   "private": true,
   "scripts": {
     "clean": "rm -rf dist",
@@ -28,8 +28,6 @@
     "fastify-static": "^2.4.0",
     "jss": "^9.8.7",
     "lodash": "^4.17.11",
-    "pino-pretty": "^2.6.1",
-    "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-jss": "^8.6.1",
