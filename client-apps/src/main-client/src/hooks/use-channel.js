@@ -1,28 +1,23 @@
+import get from 'lodash/get';
 import { useEffect, useState } from 'react';
 import { subscribe, unsubscribe, dispatch } from '../core/api';
 
 export default function useBoundChannel(props) {
   const [channelData, setChannelData] = useState();
-  const { channel, channelProp } = props;
+  const { channel, channelProp, value } = props;
 
   useEffect(() => {
-    function update({ actions, callback, data }) {
-      const value = channelProp ? data[channelProp] : props.value;
+    subscribe(channel, setChannelData);
+    return () => unsubscribe(channel, setChannelData);
+  }, [channel]);
 
-      const sendAction = action => {
-        console.log(`Sending action ${channel}.${action} to ${callback}`);
-        return dispatch(channel, action, callback);
-      };
-
-      setChannelData({ ...data, value, actions, sendAction });
+  return {
+    ...channelData,
+    value: get(channelData.data, channelProp, value),
+    sendAction(action) {
+      // eslint-disable-next-line no-console
+      console.log(`Sending action ${channel}.${action} to ${channelData.callback}`);
+      return dispatch(channel, action, channelData.callback);
     }
-
-    subscribe(channel, update);
-
-    return () => {
-      unsubscribe(channel, update);
-    };
-  }, []);
-
-  return { ...props, ...channelData };
+  };
 }

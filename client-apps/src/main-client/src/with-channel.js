@@ -1,10 +1,10 @@
 import React from 'react';
 
-import useBoundChannel from './hooks/use-channel';
+import useChannel from './hooks/use-channel';
 
-export default function(WrappedComponent, defaultDomEvent) {
-  return function WithChannel(props) {
-    const { actions, sendAction, ...channelProps } = useBoundChannel(props);
+export default function WithChannel(WrappedComponent, defaultDomEvent) {
+  return function WithChannelComponent(props) {
+    const { actions, sendAction, ...channelProps } = useChannel(props);
 
     const componentProps = {
       ...channelProps,
