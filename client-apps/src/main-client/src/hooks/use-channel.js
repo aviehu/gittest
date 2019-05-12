@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import { useEffect, useState } from 'react';
 import { subscribe, unsubscribe, dispatch } from '../core/api';
 
-export default function useChannel({ channel, channelProp, initialChannelMessage = {}, value }) {
+export default function useChannel({ channel, channelProp, initialChannelMessage = { data: {}, actions: [] }, value }) {
   const [channelData, setChannelData] = useState(initialChannelMessage);
 
   useEffect(() => {

@@ -22,7 +22,10 @@ function Led(props) {
   const { channel, channelProp, initialChannelMessage, condition, value: defaultValue, ...materialProps } = props;
   const { data, actions, value } = useChannel(props);
 
-  const selection = (condition && condition({ data, actions })) || value ? 'primary' : 'secondary';
+  const selection =
+    (condition && condition({ data, actions })) ||
+    (value && value.toString() === 'true' ? 'primary' : 'secondary') ||
+    'secondary';
   return <Badge color={selection} {...materialProps} />;
 }
 
