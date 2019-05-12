@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import Button from '../src/main-client/src/components/button';
 import Label from '../src/main-client/src/components/label';
 import Led from '../src/main-client/src/components/led';
+import LinearGauge from '../src/main-client/src/components/linear-gauge';
 
 const defaultChannelData = {
   data: { text: 'hello world', ledColor: false },
@@ -78,3 +79,7 @@ storiesOf('Led', module)
       condition={({ data }) => data.text === 'hello world'}
     />
   ));
+
+storiesOf('LinearGauge', module)
+  .add('with hard coded value', () => <LinearGauge max={40} min={20} value={25} />)
+  .add('secondary color', () => <LinearGauge color="secondary" max={40} min={20} value={25} />);
