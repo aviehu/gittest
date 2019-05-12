@@ -9,8 +9,7 @@ export default function LinearGauge(props) {
     max,
     ...materialProps
   } = props;
-  const { data } = useChannel(props);
-  const { value } = data || {};
+  const { value } = useChannel(props);
   const usedValue = value === null || value === undefined ? defaultValue : value;
   // Calculate the position of the value within a max and min
   const percentage = (usedValue - min) / (max - min) * 100;
