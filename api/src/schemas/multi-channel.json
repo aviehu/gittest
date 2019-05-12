@@ -15,7 +15,7 @@
       "items": {
         "type": "string",
         "format": "regex",
-        "pattern": "^[a-z0-9_-]+$"
+        "pattern": "^[a-zA-Z0-9_-]+$"
       }
     }
   },
