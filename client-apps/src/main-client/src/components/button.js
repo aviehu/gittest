@@ -8,12 +8,20 @@ import useChannel from '../hooks/use-channel';
 const styles = () => ({});
 
 function Button(props) {
-  const { children, render, channel, channelProperty, initialChannelMessage, ...materialProps } = props;
-  const { data, actions, basicValue, sendAction } = useChannel(channel, channelProperty, initialChannelMessage);
+  const {
+    children,
+    render,
+    channel,
+    channelProp,
+    initialChannelMessage,
+    value: defaultValue,
+    ...materialProps
+  } = props;
+  const { data, actions, value, sendAction } = useChannel(props);
 
   return (
     <MaterialButton onClick={() => sendAction(actions[0])} {...materialProps}>
-      {(render && render({ data, actions })) || basicValue || children}
+      {(render && render({ data, actions })) || value || children}
     </MaterialButton>
   );
 }

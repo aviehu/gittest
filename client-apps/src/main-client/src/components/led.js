@@ -19,10 +19,10 @@ const styles = {
 };
 
 function Led(props) {
-  const { channel, channelProperty, initialChannelMessage, condition, ...materialProps } = props;
-  const { data, actions, basicValue } = useChannel(channel, channelProperty, initialChannelMessage);
+  const { channel, channelProp, initialChannelMessage, condition, value: defaultValue, ...materialProps } = props;
+  const { data, actions, value } = useChannel(props);
 
-  const selection = (condition && condition({ data, actions })) || basicValue ? 'primary' : 'secondary';
+  const selection = (condition && condition({ data, actions })) || value ? 'primary' : 'secondary';
   return <Badge color={selection} {...materialProps} />;
 }
 

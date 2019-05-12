@@ -26,8 +26,8 @@ storiesOf('Button', module)
       render={({ data }) => `Not ${data.text}`}
     />
   ))
-  .add('with message data and channelProperty', () => (
-    <Button channel="testChannel" channelProperty="text" initialChannelMessage={defaultChannelData} />
+  .add('with message data and channelProp', () => (
+    <Button channel="testChannel" channelProp="text" initialChannelMessage={defaultChannelData} />
   ));
 
 storiesOf('Label', module)
@@ -67,7 +67,7 @@ storiesOf('Led', module)
       // colorOptions={{ colorPrimary: { backgroundColor: '#FFC0CB' }, colorSecondary: { backgroundColor: '#244336' } }}
       channel="testChannel"
       initialChannelMessage={defaultChannelData}
-      channelProperty="ledColor"
+      channelProp="ledColor"
     />
   ))
   .add('with condition picking the color', () => (

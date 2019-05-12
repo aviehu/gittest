@@ -1,4 +1,4 @@
-import { createOrGetSocket, getSocket } from './sockets';
+import { createOrGetSocket, getSocket } from './socket-wrapper';
 
 async function subscribe(channel, fn) {
   const socket = await createOrGetSocket();
@@ -35,7 +35,10 @@ async function dispatch(channel, actionName, url, data = {}) {
       data
     });
   } catch (error) {
-    console.error(error, `Error calling dispatch(${channel}, ${actionName}, ${url}, ${data}): ${JSON.stringify(error.errors)}`);
+    console.error(
+      error,
+      `Error calling dispatch(${channel}, ${actionName}, ${url}, ${data}): ${JSON.stringify(error.errors)}`
+    );
   }
 }
 

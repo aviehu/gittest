@@ -35,7 +35,9 @@ export default function _createSocketWrapper(socket) {
     }
 
     if (msg.type === 'notFound' || msg.type === 'timeout' || msg.type === 'invalid') {
-      req.reject(msg.errors);
+      const error = new Error(`Websocket response for ${msg.reqId} is ${msg.type}`);
+      Object.assign(error, msg);
+      req.reject(error);
     }
   };
 
