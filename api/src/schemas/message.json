@@ -19,7 +19,7 @@
       "description": "The channel to which the data is being published to.",
       "type": "string",
       "format": "regex",
-      "pattern": "^[a-z0-9_-]+$"
+      "pattern": "^[a-zA-Z0-9_-]+$"
     },
     "callback": {
       "description": "The callback url for actions that are accepted on this channel",

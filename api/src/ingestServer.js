@@ -32,7 +32,7 @@ function buildServer({ swagger = false, port } = {}) {
           description: 'PubUI Ingest Swagger API',
           version: '0.1.0'
         },
-        host: `localhost:${port}`,
+        host: `127.0.0.1:${port}`,
         schemes: ['http'],
         consumes: ['application/json'],
         produces: ['application/json']

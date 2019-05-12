@@ -30,13 +30,13 @@
       "description": "The channel to which the action is happening on.",
       "type": "string",
       "format": "regex",
-      "pattern": "^[a-z0-9_-]+$"
+      "pattern": "^[a-zA-Z0-9_-]+$"
     },
     "action": {
       "description": "The action being sent",
       "type": "string",
       "format": "regex",
-      "pattern": "^[a-z0-9_-]+$"
+      "pattern": "^[a-zA-Z0-9_-]+$"
     },
     "data": {
       "description": "All fields sent with that action. It's a Map<String, String>",

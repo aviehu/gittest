@@ -11,7 +11,8 @@
     "start:login": "webpack -w --config src/login-client/webpack.config.js",
     "start:main:dev": "ENTRY=dev webpack-dev-server --config src/main-client/webpack.config.js",
     "start:main": "webpack -w --config src/main-client/webpack.config.js",
-    "start:server": "nodemon"
+    "start:server": "nodemon",
+    "storybook": "start-storybook"
   },
   "dependencies": {
     "@babel/core": "^7.4.3",
@@ -39,6 +40,7 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "7.0.0",
+    "@storybook/react": "^5.0.11",
     "babel-eslint": "^10.0.1",
     "babel-loader": "8.0.5",
     "css-loader": "2.1.1",
