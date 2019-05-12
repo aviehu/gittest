@@ -1,13 +1,17 @@
-<Card>
-  <CardContent>
-    <Label variant="h5" component="h2" gutterBottom>
-      <Led channel="camera1" channelProp="active" />
-      &nbsp;&nbsp;Camera 1
-    </Label>
-    <Label color="textSecondary" channel="camera1" render={({data}) => `Resolution: ${data.resolution || 'Unknown'}`} />
-    <Label color="textSecondary" channel="camera1" render={({data}) => `FPS: ${data.fps ? (data.fps + 'fps') : 'Unknown' }`} />
-  </CardContent>
-  <CardActions>
-    <Button size="small" channel="camera1" render={({actions}) => actions[0] === 'off' ? 'Turn Off' : 'Turn On'}>Turn On</Button>
-  </CardActions>
-</Card>
+<Channel channel="camera1">
+  {({data, actions}) => (
+    <Card>
+      <CardContent>
+        <Label variant="h5" component="h2" gutterBottom>
+          <Led value={data.active} />
+          &nbsp;&nbsp;Camera 1
+        </Label>
+        <Label color="textSecondary">{`Resolution: ${data.resolution || 'Unknown'}`}</Label>
+        <Label color="textSecondary">{`FPS: ${data.fps ? (data.fps + 'fps') : 'Unknown' }`}</Label>
+      </CardContent>
+      <CardActions>
+        <Button size="small" disabled={actions.length === 0}>{actions[0] === 'off' ? 'Turn Off' : 'Turn On'}</Button>
+      </CardActions>
+    </Card>
+  )}
+</Channel>
