@@ -1,4 +1,5 @@
 {
   "123": "./dev-files/template.jsx",
-  "456": "./dev-files/card-template.jsx"
+  "456": "./dev-files/card-template.jsx",
+  "789": "./dev-files/grid-template.jsx"
 }

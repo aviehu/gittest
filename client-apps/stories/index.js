@@ -1,9 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { Card, CardContent, CardActions, Grid } from '@material-ui/core';
 import Button from '../src/main-client/src/components/button';
 import Label from '../src/main-client/src/components/label';
 import Led from '../src/main-client/src/components/led';
 import LinearGauge from '../src/main-client/src/components/linear-gauge';
+
 
 const defaultChannelData = {
   data: { text: 'hello world', ledColor: false },
@@ -79,6 +81,24 @@ storiesOf('Led', module)
       condition={({ data }) => data.text === 'hello world'}
     />
   ));
+
+storiesOf('Card', module).add('example', () => (
+  <Card>
+    <CardContent>
+      <Label variant="h5" component="h2" gutterBottom>
+        <Led value="secondary" />
+        &nbsp;&nbsp;Camera 1
+      </Label>
+      <Label color="textSecondary">Resolution: 1024 x 768</Label>
+      <Label color="textSecondary">FPS: 30fps</Label>
+    </CardContent>
+    <CardActions>
+      <Button size="small" disabled="false">
+        Turn On
+      </Button>
+    </CardActions>
+  </Card>
+));
 
 storiesOf('LinearGauge', module)
   .add('with hard coded value', () => <LinearGauge max={40} min={20} value={25} />)
