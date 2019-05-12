@@ -1,0 +1,3 @@
+{
+  "exec": "yarn babel-node src/app-server/index.js"
+}
