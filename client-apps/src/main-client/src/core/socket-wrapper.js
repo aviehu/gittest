@@ -1,4 +1,4 @@
-import _createSocketWrapper from './_create-socket-wrapper';
+import createSocketWrapper from './_create-socket-wrapper';
 
 let wrapper;
 
@@ -16,9 +16,9 @@ function createSocket(
     console.error(error);
   }
 ) {
-  return new Promise(socketResolve => {
+  wrapper = new Promise(socketResolve => {
     const socket = new WebSocket(url);
-    wrapper = _createSocketWrapper(socket);
+    const socketWrapper = createSocketWrapper(socket);
 
     socket.onerror = e => {
       onError(e);
@@ -28,12 +28,12 @@ function createSocket(
       const msg = JSON.parse(e.data);
 
       if (msg.type === 'ack' || msg.type === 'notFound' || msg.type === 'invalid') {
-        wrapper._handleResponse(msg);
+        socketWrapper._handleResponse(msg);
         return;
       }
 
       if (msg.type === 'forward') {
-        wrapper.emit(msg.channel, msg);
+        socketWrapper.emit(msg.channel, msg);
         return;
       }
 
@@ -45,9 +45,11 @@ function createSocket(
     };
 
     socket.onopen = () => {
-      socketResolve(wrapper);
+      socketResolve(socketWrapper);
     };
   });
+
+  return wrapper;
 }
 
 export { createSocket, getSocket, createOrGetSocket };
