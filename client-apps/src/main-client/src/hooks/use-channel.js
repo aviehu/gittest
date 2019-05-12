@@ -1,9 +1,10 @@
-import get from 'lodash/get'
+import get from 'lodash/get';
 import { useEffect, useState } from 'react';
-import { dispatch, subscribe, unsubscribe } from '../core/api';
+import { subscribe, unsubscribe, dispatch } from '../core/api';
 
-export default function useChannel(channel, channelProperty, initialChannelMessage = {}) {
-  const [channelData, setChannelData] = useState(initialChannelMessage);
+export default function useBoundChannel(props) {
+  const [channelData, setChannelData] = useState();
+  const { channel, channelProp, value } = props;
 
   useEffect(() => {
     subscribe(channel, setChannelData);
@@ -12,8 +13,9 @@ export default function useChannel(channel, channelProperty, initialChannelMessa
 
   return {
     ...channelData,
-    basicValue: get(channelData.data, channelProperty),
+    value: get(channelData.data, channelProp, value),
     sendAction(action) {
+      // eslint-disable-next-line no-console
       console.log(`Sending action ${channel}.${action} to ${channelData.callback}`);
       return dispatch(channel, action, channelData.callback);
     }
