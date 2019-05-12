@@ -23,9 +23,9 @@ function Led(props) {
   const { data, actions, value } = useChannel(props);
 
   const selection =
-    (condition && condition({ data, actions })) ||
-    (value && value.toString() === 'true' ? 'primary' : 'secondary') ||
-    'secondary';
+    (condition && condition({ data, actions })) || (value && value.toString() === 'true') ? 'primary' : 'secondary';
+
+  console.log(selection);
   return <Badge color={selection} {...materialProps} />;
 }
 
