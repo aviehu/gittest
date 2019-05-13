@@ -4,6 +4,7 @@ import { Card, CardContent, CardActions, Grid } from '@material-ui/core';
 import Button from '../src/main-client/src/components/button';
 import Label from '../src/main-client/src/components/label';
 import Led from '../src/main-client/src/components/led';
+import LinearGauge from '../src/main-client/src/components/linear-gauge';
 
 
 const defaultChannelData = {
@@ -98,3 +99,7 @@ storiesOf('Card', module).add('example', () => (
     </CardActions>
   </Card>
 ));
+
+storiesOf('LinearGauge', module)
+  .add('with hard coded value', () => <LinearGauge max={40} min={20} value={25} />)
+  .add('secondary color', () => <LinearGauge color="secondary" max={40} min={20} value={25} />);
