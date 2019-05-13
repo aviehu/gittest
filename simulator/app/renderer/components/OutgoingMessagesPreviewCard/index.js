@@ -17,7 +17,7 @@ const styles = () => ({
   }
 });
 
-function IncomingMessagesPreviewCard({ messages, classes }) {
+function OutgoingMessagesPreviewCard({ messages, classes }) {
   return (
     <Table className={classes.table}>
       <TableHead>
@@ -47,4 +47,4 @@ function IncomingMessagesPreviewCard({ messages, classes }) {
     </Table>
   );
 }
-export default withStyles(styles)(IncomingMessagesPreviewCard);
+export default withStyles(styles)(OutgoingMessagesPreviewCard);

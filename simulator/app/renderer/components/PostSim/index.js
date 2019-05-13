@@ -56,15 +56,19 @@ function PostSim({ classes }) {
     setUrl(newUrl);
   }
 
-  function post() {
-    const newOutgoingMessages = outgoingMessages.concat({ url, body, timestamp: Date.now() });
+  function post(bodiesToPost = [body], skipState) {
+    const newOutgoingMessages = outgoingMessages.concat(
+      bodiesToPost.map(bodyToPost => ({ url, body: bodyToPost, timestamp: Date.now() }))
+    );
     backupOutgoingMessageHistory(newOutgoingMessages);
+    if (!skipState && bodiesToPost.length === 1) {
+      setBody({
+        ...bodiesToPost[0],
+        id: Date.now()
+      });
+    }
     setOutgoingMessages(newOutgoingMessages);
-    setBody({
-      ...body,
-      id: Date.now()
-    });
-    return publishToServer(body);
+    return Promise.all(bodiesToPost.map(bodyToPost => publishToServer(url, bodyToPost)));
   }
 
   return (

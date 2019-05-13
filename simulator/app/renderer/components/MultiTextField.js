@@ -44,7 +44,7 @@ function MultiTextField({ value, onChange, classes, label }) {
         }}
       />
       <div className={classes.chipContainer}>
-        {value.map((text, index) => (
+        {value && value.map((text, index) => (
           <Chip className={classes.chip} label={text} key={text} onDelete={() => handleDelete(index)} />
         ))}
       </div>
