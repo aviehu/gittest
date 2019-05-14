@@ -52,7 +52,7 @@ export default function _createSocketWrapper(socket) {
 
     handler.on(channel, message => {
       addToCache(channel, message);
-      fn(message);
+      fn(getFromCache(channel));
     });
 
     return handler.send({

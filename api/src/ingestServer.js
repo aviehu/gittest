@@ -4,11 +4,16 @@ const fastifySensible = require('fastify-sensible');
 const fastifySwagger = require('fastify-swagger');
 const statusCodes = require('http').STATUS_CODES;
 const messageSchema = require('./schemas/message.json');
+const bulkMessageSchema = require('./schemas/bulk-message.json');
 const { getSubscribers } = require('./subscribers');
 const cache = require('./cache');
 
 const schema = {
   body: messageSchema
+};
+
+const bulkSchema = {
+  body: bulkMessageSchema
 };
 
 function buildServer({ swagger = false, port } = {}) {
@@ -71,11 +76,21 @@ function buildServer({ swagger = false, port } = {}) {
     // const { source, channel, callback, event, data, actions } = request.body;
     const { channel } = request.body;
     reply.send('ok');
+    handlePayload(channel, request.body);
+  });
 
-    const cachedMessage = { ...request.body, type: 'forward' };
+  app.post('/bulk', { schema: bulkSchema }, (request, reply) => {
+    // const { source, channel, callback, event, data, actions } = request.body;
+    const { channel } = request.body;
+    reply.send('ok');
+    handlePayload(channel, request.body);
+  });
+
+  function handlePayload(channel, payload) {
+    const cachedMessage = { ...payload, type: 'forward' };
     cache.set(channel, cachedMessage);
     forEach(subscriber => subscriber.sendJson(cachedMessage))(getSubscribers(channel));
-  });
+  }
 
   process.on('SIGINT', async () => {
     await app.close();

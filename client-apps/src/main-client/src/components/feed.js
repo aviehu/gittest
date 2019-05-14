@@ -1,9 +1,23 @@
-import _ from 'lodash';
+import map from 'lodash/map';
+import reduceRight from 'lodash/reduceRight';
+import toLower from 'lodash/toLower';
+import toUpper from 'lodash/toUpper';
 import React from 'react';
 import { Drawer, withStyles } from '@material-ui/core';
 import { blue, red, grey, yellow } from '@material-ui/core/colors';
 import Label from './label';
 import useChannel from '../hooks/use-channel';
+
+function mapRight(collection, iteratee) {
+  return reduceRight(
+    collection,
+    (acc, ...rest) => {
+      acc.push(iteratee(...rest));
+      return acc;
+    },
+    []
+  );
+}
 
 const drawerHeight = 240;
 const shades = { dark: 200, light: 500 };
@@ -58,16 +72,18 @@ const styles = theme => ({
 });
 
 function Feed(props) {
-  const { classes } = props;
+  const { classes, reverseFeed } = props;
   const { data, value } = useChannel(props);
+
+  const mapper = reverseFeed ? mapRight : map;
 
   return (
     <Drawer anchor="bottom" variant="permanent" className={classes.root} classes={{ paper: classes.paper }}>
       <Label variant="body2" value={value}>
-        {_.map(data, (line, i) => [
+        {mapper(data, (line, i) => [
           <span key={line.timestamp + i}>{line.timestamp}</span>,
-          <span className={classes[_.toLower(line.level)]}>&nbsp;{_.toUpper(line.level)}</span>,
-          <span className={classes[_.toLower(line.level)]}>&nbsp;{line.message}</span>,
+          <span className={classes[toLower(line.level)]}>&nbsp;{toUpper(line.level)}</span>,
+          <span className={classes[toLower(line.level)]}>&nbsp;{line.message}</span>,
           <br />
         ])}
       </Label>

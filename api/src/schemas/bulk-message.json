@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "message",
+  "$id": "bulk-message",
   "type": "object",
   "properties": {
     "id": {
@@ -21,23 +21,20 @@
       "format": "regex",
       "pattern": "^[a-zA-Z0-9_-]+$"
     },
-    "event": {
-      "description": "the name of the event that caused the call to publish",
-      "type": "string",
-      "format": "regex",
-      "pattern": "^[a-z0-9_-]+$"
-    },
     "data": {
-      "description": "the state of the channel. all fields must be sent at all times. It's a Map<String, String>",
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
+      "description": "an array of Map<String, String>",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
       }
     },
     "accumulate": {
-      "description": "Whether intermediary caches and the client should accumulate data for this channel or replace it (default false)",
-      "type": "string",
-      "default": false
+      "description": "Whether intermediary caches and the client should accumulate data for this channel or replace it (default true)",
+      "type": "boolean",
+      "default": true
     },
     "actions": {
       "description": "the actions that are valid to be called at this state. You can expect the UI to change according to what actions are available",
@@ -50,5 +47,5 @@
       "format": "uri"
     }
   },
-  "required": ["id", "source", "channel", "event", "data"]
+  "required": ["id", "source", "channel", "data"]
 }
