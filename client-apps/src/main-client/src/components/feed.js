@@ -5,8 +5,12 @@ import toUpper from 'lodash/toUpper';
 import React from 'react';
 import { Drawer, withStyles } from '@material-ui/core';
 import { blue, red, grey, yellow } from '@material-ui/core/colors';
-import Label from './label';
+import TableBody from '@material-ui/core/TableBody';
+import Table from '@material-ui/core/Table';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import useChannel from '../hooks/use-channel';
+import Label from './label';
 
 function mapRight(collection, iteratee) {
   return reduceRight(
@@ -68,25 +72,45 @@ const styles = theme => ({
   },
   error: {
     color: red[getShade(theme)]
+  },
+  tableRow: {
+    height: 20
+  },
+  tableCell: {
+    padding: 0,
+    border: 0
   }
 });
 
 function Feed(props) {
   const { classes, reverseFeed } = props;
-  const { data, value } = useChannel(props);
+  const { data } = useChannel(props);
 
   const mapper = reverseFeed ? mapRight : map;
 
   return (
     <Drawer anchor="bottom" variant="permanent" className={classes.root} classes={{ paper: classes.paper }}>
-      <Label variant="body2" value={value}>
-        {mapper(data, (line, i) => [
-          <span key={line.timestamp + i}>{line.timestamp}</span>,
-          <span className={classes[toLower(line.level)]}>&nbsp;{toUpper(line.level)}</span>,
-          <span className={classes[toLower(line.level)]}>&nbsp;{line.message}</span>,
-          <br />
-        ])}
-      </Label>
+      <Table>
+        <TableBody>
+          {mapper(data, (line, i) => (
+            <TableRow key={i} className={classes.tableRow}>
+              <TableCell className={classes.tableCell}>
+                <Label variant="body2">{line.timestamp}</Label>
+              </TableCell>
+              <TableCell className={classes.tableCell}>
+                <Label variant="body2" className={classes[toLower(line.level)]}>
+                  {toUpper(line.level)}
+                </Label>
+              </TableCell>
+              <TableCell className={classes.tableCell}>
+                <Label variant="body2" className={classes[toLower(line.level)]}>
+                  {line.message}
+                </Label>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Drawer>
   );
 }

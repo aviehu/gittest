@@ -114,15 +114,6 @@ const lorem = new LoremIpsum({
   }
 });
 storiesOf('Feed', module)
-  .add('with default value', () => {
-    const defaultValue = _.flatMap(i => [
-      <span>{new Date().toISOString()}</span>,
-      <span>&nbsp;{_.toUpper(classifications[i % 4])}</span>,
-      <span>&nbsp;{lorem.generateSentences(1)}</span>,
-      <br />
-    ])(_.range(50, 0));
-    return <Feed value={defaultValue} />;
-  })
   .add('using data', () => {
     const data = _.map(i => ({
       timestamp: new Date().toISOString(),
