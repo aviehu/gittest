@@ -17,12 +17,11 @@
               <Led channel={`camera-${camera}-active`} />
             </Grid>
             <Grid item>
-              <Label variant="h5" gutterBottom>Camera 1</Label>
+              <Label variant="h5" gutterBottom>{`Camera ${camera.toUpperCase()}`}</Label>
             </Grid>
           </Grid>
           <Label color="textSecondary" channel={`camera-${camera}-resolution`} prefix="Resolution: " />
           <Label color="textSecondary" channel={`camera-${camera}-fps`} prefix="FPS: " />
-          <LinearGauge channel={`camera-${camera}-fps`} min={0} max={100} />
         </CardContent>
         <CardActions>
           <Button size="small" value="Offline" channel={`camera-${camera}-button`} />
