@@ -19,7 +19,7 @@ const styles = {
 };
 
 function Led(props) {
-  const { channel, channelProp, initialChannelMessage, condition, value: defaultValue, ...materialProps } = props;
+  const { condition, ...materialProps } = props;
   const { data, actions, value } = useChannel(props);
 
   const selection =

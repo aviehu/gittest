@@ -11,7 +11,6 @@ const cache = require('./cache');
 const actionSchema = require('./schemas/action.json');
 const singleChannelSchema = require('./schemas/single-channel.json');
 const multiChannelSchema = require('./schemas/multi-channel.json');
-
 function buildServer(wss, log) {
   wss.on('connection', ws => {
     ws.on('close', () => removeAllSubscriptions(ws));

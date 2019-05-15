@@ -10,7 +10,6 @@ export default function LinearGauge(props) {
   } = props;
   const { value } = useChannel(props);
   // Calculate the position of the value within a max and min
-  const percentage = (value - min) / (max - min) * 100;
-
-  return <MaterialLinearGauge {...materialProps} {...data} value={percentage} variant="determinate" />;
+  const percentage = String(!isNaN(value) && value ? ((Number(value) - min) / (max - min) * 100) : 0);
+  return <MaterialLinearGauge {...materialProps} value={percentage} variant="determinate" />;
 }

@@ -6,6 +6,7 @@ const statusCodes = require('http').STATUS_CODES;
 const messageSchema = require('./schemas/message.json');
 const bulkMessageSchema = require('./schemas/bulk-message.json');
 const { getSubscribers } = require('./subscribers');
+const fastifyCors = require('fastify-cors');
 const cache = require('./cache');
 
 const schema = {
@@ -23,6 +24,8 @@ function buildServer({ swagger = false, port } = {}) {
     caseSensitive: false,
     ignoreTrailingSlash: true
   });
+
+  app.register(fastifyCors, {})
 
   app.register(fastifySensible, { errorHandler: false });
 
@@ -77,6 +80,10 @@ function buildServer({ swagger = false, port } = {}) {
     const { channel } = request.body;
     reply.send('ok');
     handlePayload(channel, request.body);
+  });
+
+  app.options('/publish', (request, reply) => {
+    reply.send('ok');
   });
 
   app.post('/bulk', { schema: bulkSchema }, (request, reply) => {

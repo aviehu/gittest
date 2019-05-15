@@ -1,17 +1,10 @@
-<div style={{textAlign: "left", flexGrow: 1}}>
+<div style={{textAlign: "left", flexGrow: 1, display: 'flex', flexDirection: 'column', height: '100%;'}}>
   <AppBar position="static" style={{
     backgroundImage: "url(/hp_menu_bg.jpg)",
     backgroundSize: "cover",
     backgroundPostion: "center"
   }}>
     <Toolbar>
-      <img
-        // className={classes.icon}
-        style={{ marginLeft: -12, marginRight: 20 }}
-        src="/2880px-LiveU_logo.svg.png"
-        alt="live u logo"
-        height="40px"
-      />
       <Label variant="h6" style={{flexGrow: 1, color: "#ededee"}}>
         Pub Ui
       </Label>
@@ -21,7 +14,7 @@
   </AppBar>
   <div
     // className={classes.content}
-    style={{margin: 12}}
+    style={{margin: 12, flex: 1, overflow: 'auto'}}
   >
     <Label variant="h4" gutterBottom>
       Cameras

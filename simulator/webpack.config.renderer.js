@@ -19,7 +19,7 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   devServer: {
-    port: 8000,
+    port: 8002,
     historyApiFallback: {
       verbose: true,
       disableDotRule: true,

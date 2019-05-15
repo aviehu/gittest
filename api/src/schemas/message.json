@@ -28,11 +28,7 @@
       "pattern": "^[a-z0-9_-]+$"
     },
     "data": {
-      "description": "the state of the channel. all fields must be sent at all times. It's a Map<String, String>",
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
-      }
+      "description": "the state of the channel. all fields must be sent at all times. It's a Map<String, String>"
     },
     "accumulate": {
       "description": "Whether intermediary caches and the client should accumulate data for this channel or replace it (default false)",

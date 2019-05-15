@@ -6,9 +6,9 @@ export default createMuiTheme({
   palette: {
     primary: green,
     accent: red,
-    type: 'light'
+    type: 'dark'
   },
   typography: {
     useNextVariants: true
-  }
+  },
 });

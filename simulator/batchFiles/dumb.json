@@ -1,0 +1,150 @@
+[
+  {
+    "id": 1557945199494,
+    "channel": "camera-a-active",
+    "url": "http://localhost:8001/callback",
+    "event": "change",
+    "data": {
+      "value": true
+    },
+    "actions": [
+      "change"
+    ],
+    "source": "logs"
+  },
+  {
+    "channel": "camera-a-resolution",
+    "data": {
+      "value": "600x400"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-a-fps",
+    "data": {
+      "value": "30"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-a-button",
+    "data": {
+      "value": "Turn Off"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "id": 1557945199494,
+    "channel": "camera-b-active",
+    "url": "http://localhost:8001/callback",
+    "event": "change",
+    "data": {
+      "value": false
+    },
+    "actions": [
+      "change"
+    ],
+    "source": "logs"
+  },
+  {
+    "channel": "camera-b-resolution",
+    "data": {
+      "value": 0
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-b-fps",
+    "data": {
+      "value": 0
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-b-button",
+    "data": {
+      "value": "Turn On"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "id": 1557945199494,
+    "channel": "camera-c-active",
+    "url": "http://localhost:8001/callback",
+    "event": "change",
+    "data": {
+      "value": true
+    },
+    "actions": [
+      "change"
+    ],
+    "source": "logs"
+  },
+  {
+    "channel": "camera-c-resolution",
+    "data": {
+      "value": "1920x1020"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-c-fps",
+    "data": {
+      "value": "40"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-c-button",
+    "data": {
+      "value": "Turn Off"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "id": 1557945199494,
+    "channel": "camera-d-active",
+    "url": "http://localhost:8001/callback",
+    "event": "change",
+    "data": {
+      "value": true
+    },
+    "actions": [
+      "change"
+    ],
+    "source": "logs"
+  },
+  {
+    "channel": "camera-d-resolution",
+    "data": {
+      "value": "500x500"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-d-fps",
+    "data": {
+      "value": "60"
+    },
+    "event": "initialize",
+    "source": "sim"
+  },
+  {
+    "channel": "camera-d-button",
+    "data": {
+      "value": "Turn Off"
+    },
+    "event": "initialize",
+    "source": "sim"
+  }
+]
