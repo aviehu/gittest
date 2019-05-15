@@ -1,0 +1,103 @@
+[
+  {
+    "id": "123",
+    "source": "liveu",
+    "channel": "camera1",
+    "callback": "http://localhost:9002/test",
+    "event": "interval",
+    "data": {
+      "active": "true",
+      "resolution": "1025 x 768",
+      "fps": "24"
+    },
+    "actions": [
+      "off"
+    ]
+  },
+  {
+    "id": "124",
+    "source": "liveu",
+    "channel": "GPS",
+    "event": "interval",
+    "data": {
+      "x": 40.7600000,
+      "y": -73.9840000,
+      "z": 0.1300000
+    }
+  },
+  {
+    "id": "125",
+    "source": "liveu",
+    "channel": "OBD",
+    "event": "interval",
+    "data": {
+      "speed": 100,
+      "rpm": 3450,
+      "fuel": 45
+    }
+  },
+  {
+    "id": "123456",
+    "source": "liveu",
+    "channel": "logs",
+    "data": [
+      { "timestamp": "2019-05-14T07:13:46.945Z",
+        "level": "error",
+        "message":
+        "Nostrud Lorem sit ea laborum officia commodo consectetur elit aliquip ipsum est ipsum nisi excepteur sit." },
+      { "timestamp": "2019-05-14T07:13:46.945Z",
+        "level": "warn",
+        "message": "Ipsum nisi adipisicing cillum aliqua cillum." },
+      { "timestamp": "2019-05-14T07:13:46.945Z",
+        "level": "info",
+        "message":
+        "Ex dolore ea proident in voluptate tempor aliqua officia quis veniam." },
+      { "timestamp": "2019-05-14T07:13:47.345Z",
+        "level": "debug",
+        "message":
+        "Irure sunt nulla ad nulla cillum occaecat pariatur ad non est." },
+      { "timestamp": "2019-05-14T07:13:47.346Z",
+        "level": "error",
+        "message": "Laboris anim nisi qui qui velit." },
+      { "timestamp": "2019-05-14T07:13:47.500Z",
+        "level": "warn",
+        "message":
+        "Proident qui consectetur voluptate non elit ullamco voluptate." },
+      { "timestamp": "2019-05-14T07:13:47.945Z",
+        "level": "info",
+        "message": "Quis consectetur id laboris ea aliquip occaecat." }
+    ]
+  },
+  {
+    "id": "123457",
+    "source": "liveu",
+    "channel": "logs",
+    "data": [
+      { "timestamp": "2019-05-14T07:13:48.002Z",
+        "level": "error",
+        "message":
+        "Nostrud Lorem sit ea laborum officia commodo consectetur elit aliquip ipsum est ipsum nisi excepteur sit." },
+      { "timestamp": "2019-05-14T07:13:48.002Z",
+        "level": "warn",
+        "message": "Ipsum nisi adipisicing cillum aliqua cillum." },
+      { "timestamp": "2019-05-14T07:13:48.002Z",
+        "level": "info",
+        "message":
+        "Ex dolore ea proident in voluptate tempor aliqua officia quis veniam." },
+      { "timestamp": "2019-05-14T07:13:50.345Z",
+        "level": "debug",
+        "message":
+        "Irure sunt nulla ad nulla cillum occaecat pariatur ad non est." },
+      { "timestamp": "2019-05-14T07:13:50.348Z",
+        "level": "error",
+        "message": "Laboris anim nisi qui qui velit." },
+      { "timestamp": "2019-05-14T07:13:50.500Z",
+        "level": "warn",
+        "message":
+        "Proident qui consectetur voluptate non elit ullamco voluptate." },
+      { "timestamp": "2019-05-14T07:13:50.002Z",
+        "level": "info",
+        "message": "Quis consectetur id laboris ea aliquip occaecat." }
+    ]
+  }
+]

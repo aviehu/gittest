@@ -1,0 +1,26 @@
+[
+    {
+        "channel": "camera-a-active",
+        "data": {
+            "value": true
+        },
+        "event": "initialize",
+        "source": "sim"
+    },
+    {
+        "channel": "camera-a-resolution",
+        "data": {
+            "value": "1920x1020"
+        },
+        "event": "initialize",
+        "source": "sim"
+    },
+    {
+        "channel": "camera-a-fps",
+        "data": {
+            "value": "40 fps"
+        },
+        "event": "initialize",
+        "source": "sim"
+    }
+]
