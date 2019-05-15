@@ -9,7 +9,7 @@ export default function useChannel({ channel, channelProp = 'value', initialChan
     subscribe(channel, setChannelPayload);
     return () => unsubscribe(channel, setChannelPayload);
   }, [channel]);
-  const x = get;
+
   return {
     ...channelPayload,
     value: get(channelPayload.data, channelProp, value),
