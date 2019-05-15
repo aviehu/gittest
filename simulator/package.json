@@ -1,0 +1,64 @@
+{
+  "name": "desktop",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "electron": "4.0.1",
+    "env-var": "^4.0.0",
+    "express": "^4.16.4",
+    "fix-path": "^2.1.0",
+    "lodash": "^4.17.11",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-json-view": "^1.19.1",
+    "react-scripts": "2.1.8",
+    "typeface-roboto": "^0.0.54"
+  },
+  "scripts": {
+    "clean": "rm -rf dist release",
+    "start:main": "webpack  --config webpack.config.main.js && PORT=8000 electron dist",
+    "start:renderer": "webpack-dev-server --config webpack.config.renderer.js",
+    "build:renderer:prod": "webpack -p --config webpack.config.renderer.js",
+    "build:main:prod": "webpack -p --config webpack.config.main.js",
+    "build:prod": "yarn run build:renderer:prod && yarn run build:main:prod && node createPackageJson.js",
+    "pack": "yarn run clean && yarn run build:prod && electron-builder -lm"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.2.3",
+    "@babel/preset-react": "7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "8.0.5",
+    "css-loader": "2.1.0",
+    "electron-builder": "20.38.5",
+    "eslint": "5.12.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-unicorn": "^7.1.0",
+    "file-loader": "3.0.1",
+    "html-webpack-plugin": "3.2.0",
+    "jest": "^23.6.0",
+    "node-loader": "0.6.0",
+    "prettier": "^1.16.4",
+    "webpack": "4.28.4",
+    "webpack-cli": "3.2.1",
+    "webpack-dev-server": "3.1.14"
+  }
+}
