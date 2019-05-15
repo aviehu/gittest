@@ -1,11 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { Card, CardContent, CardActions, Grid } from '@material-ui/core';
+import _ from 'lodash/fp';
+import { LoremIpsum } from 'lorem-ipsum';
 import Button from '../src/main-client/src/components/button';
 import Label from '../src/main-client/src/components/label';
 import Led from '../src/main-client/src/components/led';
 import LinearGauge from '../src/main-client/src/components/linear-gauge';
-
+import Feed from '../src/main-client/src/components/feed';
 
 const defaultChannelData = {
   data: { text: 'hello world', ledColor: false },
@@ -103,3 +105,21 @@ storiesOf('Card', module).add('example', () => (
 storiesOf('LinearGauge', module)
   .add('with hard coded value', () => <LinearGauge max={40} min={20} value={25} />)
   .add('secondary color', () => <LinearGauge color="secondary" max={40} min={20} value={25} />);
+
+const classifications = ['debug', 'info', 'warn', 'error'];
+const lorem = new LoremIpsum({
+  wordsPerSentence: {
+    max: 16,
+    min: 4
+  }
+});
+storiesOf('Feed', module)
+  .add('using data', () => {
+    const data = _.map(i => ({
+      timestamp: new Date().toISOString(),
+      level: classifications[i % 4],
+      message: lorem.generateSentences(1)
+    }))(_.range(50, 0));
+
+    return <Feed initialChannelMessage={{ data }} />;
+  });
