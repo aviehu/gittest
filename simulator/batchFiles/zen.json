@@ -4,8 +4,8 @@
     "channel": "cameras",
     "url": "http://localhost:8001/callback",
     "event": "change",
-    "data": {
-      "value": [
+    "accumulate": true,
+    "data": [
         {
           "name": "Cam #1",
           "active": true,
@@ -58,8 +58,7 @@
           "fps": 40,
           "resolution": "800x800"
         }
-      ]
-    },
+    ],
     "actions": [],
     "source": "logs"
   }

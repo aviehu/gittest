@@ -5,6 +5,13 @@
     backgroundPostion: "center"
   }}>
     <Toolbar>
+      <img
+        // className={classes.icon}
+        style={{ marginLeft: -12, marginRight: 20 }}
+        src="/2880px-LiveU_logo.svg.png"
+        alt="live u logo"
+        height="40px"
+      />
       <Label variant="h6" style={{flexGrow: 1, color: "#ededee"}}>
         Pub Ui
       </Label>
@@ -58,12 +65,11 @@
       spacing={16}
       justify="flex-start"
       direction="row"
-      alignItems="center"
     >
       <Grid item md={3} xs={12}>
         <Channel channel="OBD">
           {({data}) => (
-            <Card>
+            <Card style={{height: '100%'}}>
               <CardContent>
                 <Label variant="h5" component="h2" gutterBottom>
                   OBD
@@ -77,6 +83,7 @@
                 <Label color="textSecondary">
                   <span>Fuel:</span>&nbsp;{data.fuel}
                 </Label>
+                <LinearGauge value={data.fuel} min={0} max={100} />
               </CardContent>
             </Card>
           )}
@@ -85,7 +92,7 @@
       <Grid item md={3} xs={12}>
         <Channel channel="GPS">
           {({data}) => (
-            <Card>
+            <Card style={{height: '100%'}}>
               <CardContent>
                 <Label variant="h5" component="h2" gutterBottom>
                   GPS
@@ -99,12 +106,15 @@
                 <Label color="textSecondary">
                   <span>Z:</span>&nbsp;{data.z}
                 </Label>
+                <Label color="textSecondary">
+                  <span>{new Date(data.timestamp).toLocaleString()}</span>
+                </Label>
               </CardContent>
             </Card>
           )}
         </Channel>
       </Grid>
     </Grid>
-    <Feed channel="logs" reverseFeed="true"/>
+    <Feed channel="logs" reverseFeed="true" title={'Logs'}/>
   </div>
 </div>
