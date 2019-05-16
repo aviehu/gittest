@@ -63,7 +63,7 @@ function TargetUrlCard({ onChange, value, classes, post, postBody }) {
           Publish
         </Button>
         <Button color="primary" variant="contained" style={{ position: 'relative' }} className={classes.spacing}>
-          Batch Publish
+          Publish File
           <input
             type='file'
             accept='.json'
