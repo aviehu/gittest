@@ -4,7 +4,6 @@
     "channel": "cameras",
     "url": "http://localhost:8001/callback",
     "event": "change",
-    "accumulate": true,
     "data": [
         {
           "name": "Cam #1",

@@ -41,6 +41,7 @@
     "id": "123456",
     "source": "liveu",
     "channel": "logs",
+    "accumulate": true,
     "data": [
       { "timestamp": "2019-05-14T07:13:46.945Z",
         "level": "error",
@@ -73,6 +74,7 @@
     "id": "123457",
     "source": "liveu",
     "channel": "logs",
+    "accumulate": true,
     "data": [
       { "timestamp": "2019-05-14T07:13:48.002Z",
         "level": "error",

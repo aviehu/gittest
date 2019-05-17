@@ -1,3 +1,3 @@
 export default function readPayload() {
-  return localStorage.getItem('url') || 'http://localhost:9002/publish';
+  return localStorage.getItem('url') || 'http://127.0.0.1:9002/publish';
 }

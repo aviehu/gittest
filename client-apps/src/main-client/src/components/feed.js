@@ -88,7 +88,7 @@ const styles = theme => ({
 
 function Feed(props) {
   const { classes, reverseFeed, title } = props;
-  const { data } = useChannel(props);
+  const { data } = useChannel({ ...props,  defaultData: [] });
 
   const mapper = reverseFeed ? mapRight : map;
 

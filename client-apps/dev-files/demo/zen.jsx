@@ -1,12 +1,12 @@
-<Channel channel={`cameras`} value={[]}>
-  {({value, actions}) => (
+<Channel channel={`cameras`} defaultData={[]}>
+  {({data, actions}) => (
     <Grid
       container
       direction="row"
       spacing={40}
       style={{ padding: 15, margin: 'auto', width: '100%' }}
     >
-      {value.map(({ active, name, fps, resolution, error } = {}) => (
+      {data.map(({ active, name, fps, resolution, error } = {}) => (
         <Grid item xs={12} sm={6} md={4}>
           <Card style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardContent style={{ flex: 1 }}>
