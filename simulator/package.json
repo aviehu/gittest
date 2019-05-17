@@ -20,7 +20,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist release",
-    "start:main": "webpack  --config webpack.config.main.js && PORT=8000 electron dist",
+    "start:main": "webpack  --config webpack.config.main.js && PORT=8002 electron dist",
     "start:renderer": "webpack-dev-server --config webpack.config.renderer.js",
     "build:renderer:prod": "webpack -p --config webpack.config.renderer.js",
     "build:main:prod": "webpack -p --config webpack.config.main.js",
@@ -42,6 +42,7 @@
     "@babel/preset-react": "7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "8.0.5",
+    "concurrently": "^4.1.0",
     "css-loader": "2.1.0",
     "electron-builder": "20.38.5",
     "eslint": "5.12.0",

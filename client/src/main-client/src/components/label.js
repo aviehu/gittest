@@ -6,13 +6,12 @@ export default function Label(props) {
   const {
     children,
     render,
-    channel,
-    channelProp,
-    initialChannelMessage,
-    value: defaultValue,
+    prefix,
     ...materialProps
   } = props;
   const { data, value, actions } = useChannel(props);
-
-  return <Typography {...materialProps}>{(render && render({ data, actions })) || value || children}</Typography>;
+  const child = prefix ?
+    prefix + (value || '') :
+    (render && render({ data, actions })) || value || children;
+  return <Typography {...materialProps}>{child}</Typography>;
 }

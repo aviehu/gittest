@@ -1,4 +1,4 @@
-<div style={{textAlign: "left", flexGrow: 1}}>
+<div style={{textAlign: "left", flexGrow: 1, display: 'flex', flexDirection: 'column', height: '100%;'}}>
   <AppBar position="static" style={{
     backgroundImage: "url(/hp_menu_bg.jpg)",
     backgroundSize: "cover",
@@ -21,7 +21,7 @@
   </AppBar>
   <div
     // className={classes.content}
-    style={{margin: 12}}
+    style={{margin: 12, flex: 1, overflow: 'auto'}}
   >
     <Label variant="h4" gutterBottom>
       Cameras
@@ -65,12 +65,11 @@
       spacing={16}
       justify="flex-start"
       direction="row"
-      alignItems="center"
     >
       <Grid item md={3} xs={12}>
         <Channel channel="OBD">
           {({data}) => (
-            <Card>
+            <Card style={{height: '100%'}}>
               <CardContent>
                 <Label variant="h5" component="h2" gutterBottom>
                   OBD
@@ -84,6 +83,7 @@
                 <Label color="textSecondary">
                   <span>Fuel:</span>&nbsp;{data.fuel}
                 </Label>
+                <LinearGauge value={data.fuel} min={0} max={100} />
               </CardContent>
             </Card>
           )}
@@ -92,7 +92,7 @@
       <Grid item md={3} xs={12}>
         <Channel channel="GPS">
           {({data}) => (
-            <Card>
+            <Card style={{height: '100%'}}>
               <CardContent>
                 <Label variant="h5" component="h2" gutterBottom>
                   GPS
@@ -106,12 +106,15 @@
                 <Label color="textSecondary">
                   <span>Z:</span>&nbsp;{data.z}
                 </Label>
+                <Label color="textSecondary">
+                  <span>{new Date(data.timestamp).toLocaleString()}</span>
+                </Label>
               </CardContent>
             </Card>
           )}
         </Channel>
       </Grid>
     </Grid>
-    <Feed channel="logs" reverseFeed="true"/>
+    <Feed channel="logs" reverseFeed="true" title={'Logs'}/>
   </div>
 </div>

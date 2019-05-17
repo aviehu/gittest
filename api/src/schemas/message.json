@@ -36,7 +36,7 @@
     },
     "accumulate": {
       "description": "Whether intermediary caches and the client should accumulate data for this channel or replace it (default false)",
-      "type": "string",
+      "type": "boolean",
       "default": false
     },
     "actions": {
