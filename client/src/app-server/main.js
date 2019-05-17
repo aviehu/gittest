@@ -9,7 +9,6 @@ import reactRender from './renderer';
 
 import App from '../main-client/src/app';
 import * as globals from '../main-client/src/globals';
-
 function run(reactElementCode) {
   const vm = new VM({
     sandbox: globals
@@ -18,9 +17,14 @@ function run(reactElementCode) {
   return vm.run(reactElementCode);
 }
 
-async function render(templateFilePath) {
-  const template = await fs.readFile(templateFilePath);
+function addAppBar(template, { title }){
+  return `<Root title="${title}">${template}</Root>`;
+}
+
+async function render(appFolder) {
   const htmlFile = await fs.readFile('./dist/index.html');
+  const options = JSON.parse(await fs.readFile(`${appFolder}/app.json`));
+  const template = addAppBar(await fs.readFile(`${appFolder}/App.jsx`), options);
 
   const babelConfig = {
     configFile: false,
@@ -33,19 +37,19 @@ async function render(templateFilePath) {
 
   const script = `<script type="text/javascript">${clientCode}</script>`;
 
-  return reactRender(htmlFile, <App element={run(reactElement)} />, script);
+  return reactRender(htmlFile, <App element={run(reactElement)} options={options} />, script);
 }
 
 export default fastifyPlugin((app, options, next) => {
   app.get('/', async (request, reply) => {
-    const user = app.getUser(request);
+    const authorizedApp = app.getApp(request);
 
-    if (!user) {
+    if (!authorizedApp) {
       app.requireAuth(request, reply);
       return;
     }
 
-    const data = await render(user);
+    const data = await render(authorizedApp);
 
     reply.header('Content-Type', 'text/html');
 
