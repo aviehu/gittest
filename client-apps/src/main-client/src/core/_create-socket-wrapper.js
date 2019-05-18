@@ -72,5 +72,8 @@ export default function _createSocketWrapper(socket) {
       channel
     });
   };
+  handler.clearData = async function clearData(channel, defaultData) {
+    handler.emit(channel, { id: uuid(), channel, data: defaultData, source: 'PubUi', event: 'clearCache' });
+  };
   return handler;
 }
