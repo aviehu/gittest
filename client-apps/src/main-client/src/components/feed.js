@@ -3,12 +3,10 @@ import reduceRight from 'lodash/reduceRight';
 import toLower from 'lodash/toLower';
 import toUpper from 'lodash/toUpper';
 import React from 'react';
-import { Drawer, withStyles } from '@material-ui/core';
+import classNames from 'classnames';
+import { Drawer, Divider, Table, TableBody, TableCell, TableRow, IconButton, withStyles } from '@material-ui/core';
 import { blue, red, grey, yellow } from '@material-ui/core/colors';
-import TableBody from '@material-ui/core/TableBody';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import DeleteIcon from '@material-ui/icons/Delete';
 import useChannel from '../hooks/use-channel';
 import Label from './label';
 
@@ -23,7 +21,7 @@ function mapRight(collection, iteratee) {
   );
 }
 
-const drawerHeight = 240;
+const drawerHeight = 200;
 const shades = { dark: 200, light: 500 };
 
 function getShade(theme) {
@@ -35,12 +33,15 @@ function getShade(theme) {
 }
 
 const styles = theme => ({
-  root: { overflow: 'auto', height: drawerHeight, flexShrink: 0 },
+  root: { overflow: 'auto', height: drawerHeight, flexShrink: 0, },
   paper: {
+    opacity: 0.9,
     height: drawerHeight,
     paddingLeft: 12,
     paddingRight: 12,
     paddingTop: 4,
+    marginRight: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing.unit * 1.5,
     '&::-webkit-scrollbar': {
       width: 10
     },
@@ -73,31 +74,50 @@ const styles = theme => ({
   error: {
     color: red[getShade(theme)]
   },
+  table: {
+  },
   tableRow: {
     height: 20
   },
   tableCell: {
     padding: 0,
+    paddingRight: theme.spacing.unit*2,
     border: 0
+  },
+  noStretch: {
+    width: "1%",
+    whiteSpace: "nowrap",
+  },
+  clearButton: {
+    position: "fixed",
+    bottom: 0,
+    right: theme.spacing.unit,
   }
 });
 
 function Feed(props) {
-  const { classes, reverseFeed } = props;
-  const { data } = useChannel(props);
+  const { classes, reverseFeed, title, titleVariant="h5" } = props;
+  const { data, clearData } = useChannel({ ...props,  defaultData: [] });
 
   const mapper = reverseFeed ? mapRight : map;
 
   return (
-    <Drawer anchor="bottom" variant="permanent" className={classes.root} classes={{ paper: classes.paper }}>
-      <Table>
+    <Drawer
+      anchor="bottom"
+      variant="permanent"
+      className={classes.root}
+      classes={{ paper: classes.paper }}
+    >
+      <Label value={title} variant={titleVariant} />
+      {title && <Divider />}
+      <Table className={classes.table}>
         <TableBody>
           {mapper(data, (line, i) => (
             <TableRow key={i} className={classes.tableRow}>
-              <TableCell className={classes.tableCell}>
-                <Label variant="body2">{line.timestamp}</Label>
+              <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
+                <Label variant="body2">{new Date(line.timestamp).toISOString()}</Label>
               </TableCell>
-              <TableCell className={classes.tableCell}>
+              <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
                 <Label variant="body2" className={classes[toLower(line.level)]}>
                   {toUpper(line.level)}
                 </Label>
@@ -111,6 +131,9 @@ function Feed(props) {
           ))}
         </TableBody>
       </Table>
+      <IconButton aria-label="Delete" className={classes.clearButton} onClick={clearData}>
+        <DeleteIcon fontSize="small" />
+      </IconButton>
     </Drawer>
   );
 }

@@ -2,6 +2,7 @@ const fastify = require('fastify');
 const forEach = require('lodash/fp/forEach');
 const fastifySensible = require('fastify-sensible');
 const fastifySwagger = require('fastify-swagger');
+const fastifyCors = require('fastify-cors');
 const statusCodes = require('http').STATUS_CODES;
 const messageSchema = require('./schemas/message.json');
 const bulkMessageSchema = require('./schemas/bulk-message.json');
@@ -23,6 +24,8 @@ function buildServer({ swagger = false, port } = {}) {
     caseSensitive: false,
     ignoreTrailingSlash: true
   });
+
+  app.register(fastifyCors, {});
 
   app.register(fastifySensible, { errorHandler: false });
 

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
+import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import MultiTextField from './MultiTextField';
@@ -27,6 +30,15 @@ function BodyFormCard({ onChange, value, classes }) {
   return (
     <Card className={classes.card}>
       <CardContent>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography >
+            Accumulate
+          </Typography>
+          <Switch
+            checked={value.accumulate}
+            onChange={() => onChange({ ...value, accumulate: !value.accumulate })}
+          />
+        </div>
         <TextField
           label="channel"
           className={classes.textField}

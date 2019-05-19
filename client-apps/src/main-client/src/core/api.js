@@ -24,6 +24,14 @@ async function unsubscribe(channel, fn) {
   }
 }
 
+async function clearData(channel, defaultData = {}) {
+  const socket = await getSocket();
+  if (socket == null || channel == null) {
+    return;
+  }
+  socket.clearData(channel, defaultData);
+}
+
 async function dispatch(channel, actionName, url, data = {}) {
   const socket = await createOrGetSocket();
   try {
@@ -55,4 +63,4 @@ function logout() {
   document.location = '/login';
 }
 
-export { subscribe, unsubscribe, dispatch, logout };
+export { subscribe, unsubscribe, dispatch, logout, clearData };

@@ -5,12 +5,19 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { logout } from './core/api';
 import useKeyboard from './hooks/use-keyboard';
 
-const styles = () => ({});
+const styles = () => ({
+  theRoot: {
+    backgroundColor: '#303030',
+    height: '100vh',
+    boxSizing: 'border-box',
+    overflow: 'auto'
+  }
+});
 
-function App({ element }) {
+function App({ element, classes }) {
   useKeyboard('KeyL', { isAlt: true }, logout);
 
-  return <div>{element}</div>;
+  return <div className={classes.theRoot}>{element}</div>;
 }
 
 export default withStyles(styles)(App);
