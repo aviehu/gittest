@@ -4,14 +4,17 @@
     "channel": "cameras",
     "url": "http://localhost:8001/callback",
     "event": "change",
+    "accumulate": false,
     "data": [
         {
+          "id": 0,
           "name": "Cam #1",
           "active": true,
-          "fps": 60,
+          "fps": 100,
           "resolution": "1980x1080"
         },
         {
+          "id": 1,
           "name": "Some model #1",
           "active": false,
           "fps": 0,
@@ -19,6 +22,7 @@
           "error": "Cannot connect to device"
         },
         {
+          "id": 2,
           "name": "More Cameras",
           "active": false,
           "fps": 0,
@@ -26,6 +30,7 @@
           "error": "Cannot connect to device"
         },
         {
+          "id": 3,
           "name": "Camera X",
           "active": true,
           "fps": 20,
@@ -33,18 +38,21 @@
           "error": false
         },
         {
+          "id": 4,
           "name": "Some model #1",
           "active": true,
           "fps": 40,
           "resolution": "800x800"
         },
         {
+          "id": 5,
           "name": "Some model #1",
           "active": false,
           "fps": 0,
           "resolution": "800x800"
         },
         {
+          "id": 6,
           "name": "Camera X",
           "active": true,
           "fps": 20,
@@ -52,6 +60,7 @@
           "error": false
         },
         {
+          "id": 7,
           "name": "Some model #1",
           "active": true,
           "fps": 40,

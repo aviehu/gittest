@@ -1,9 +1,0 @@
-{
-  "123": "./dev-files/template.jsx",
-  "456": "./dev-files/card-template.jsx",
-  "789": "./dev-files/grid-template.jsx",
-  "mvp": "./dev-files/mvp-template.jsx",
-  "dumb": "./dev-files/demo/dumb.jsx",
-  "smart": "./dev-files/demo/smart.jsx",
-  "zen": "./dev-files/demo/zen.jsx"
-}
