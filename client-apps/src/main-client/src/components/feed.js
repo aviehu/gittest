@@ -4,7 +4,7 @@ import toLower from 'lodash/toLower';
 import toUpper from 'lodash/toUpper';
 import React from 'react';
 import classNames from 'classnames';
-import { Drawer, Divider, Grid, Table, TableBody, TableCell, TableRow, IconButton, withStyles } from '@material-ui/core';
+import { Drawer, Divider, Table, TableBody, TableCell, TableRow, IconButton, withStyles } from '@material-ui/core';
 import { blue, red, grey, yellow } from '@material-ui/core/colors';
 import DeleteIcon from '@material-ui/icons/Delete';
 import useChannel from '../hooks/use-channel';
@@ -40,6 +40,8 @@ const styles = theme => ({
     paddingLeft: 12,
     paddingRight: 12,
     paddingTop: 4,
+    marginRight: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing.unit * 1.5,
     '&::-webkit-scrollbar': {
       width: 10
     },

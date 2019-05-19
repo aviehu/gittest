@@ -82,10 +82,6 @@ function buildServer({ swagger = false, port } = {}) {
     handlePayload(channel, request.body);
   });
 
-  app.options('/publish', (request, reply) => {
-    reply.send('ok');
-  });
-
   app.post('/bulk', { schema: bulkSchema }, (request, reply) => {
     // const { source, channel, callback, event, data, actions } = request.body;
     const { channel } = request.body;
