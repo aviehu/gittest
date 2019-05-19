@@ -8,7 +8,6 @@ import React from 'react';
 import reactRender from './renderer';
 import App from '../login-client/src/app';
 
-const USER_FILE_PATH = env.get('USER_FILE_PATH', './dev-files/users.json').asString();
 const USER_DIRECTORY_PATH = env.get('USER_DIRECTORY_PATH', './apps').asString();
 
 async function render() {
