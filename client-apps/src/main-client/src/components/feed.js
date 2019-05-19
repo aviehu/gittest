@@ -3,14 +3,10 @@ import reduceRight from 'lodash/reduceRight';
 import toLower from 'lodash/toLower';
 import toUpper from 'lodash/toUpper';
 import React from 'react';
-import { Drawer, withStyles } from '@material-ui/core';
+import classNames from 'classnames';
+import { Drawer, Divider, Grid, Table, TableBody, TableCell, TableRow, IconButton, withStyles } from '@material-ui/core';
 import { blue, red, grey, yellow } from '@material-ui/core/colors';
-import TableBody from '@material-ui/core/TableBody';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
-import TableRow from '@material-ui/core/TableRow';
+import DeleteIcon from '@material-ui/icons/Delete';
 import useChannel from '../hooks/use-channel';
 import Label from './label';
 
@@ -39,8 +35,7 @@ function getShade(theme) {
 const styles = theme => ({
   root: { overflow: 'auto', height: drawerHeight, flexShrink: 0, },
   paper: {
-    backgroundColor: '#000',
-    opacity: .7,
+    opacity: 0.9,
     height: drawerHeight,
     paddingLeft: 12,
     paddingRight: 12,
@@ -77,18 +72,30 @@ const styles = theme => ({
   error: {
     color: red[getShade(theme)]
   },
+  table: {
+  },
   tableRow: {
     height: 20
   },
   tableCell: {
     padding: 0,
+    paddingRight: theme.spacing.unit*2,
     border: 0
+  },
+  noStretch: {
+    width: "1%",
+    whiteSpace: "nowrap",
+  },
+  clearButton: {
+    position: "fixed",
+    bottom: 0,
+    right: theme.spacing.unit,
   }
 });
 
 function Feed(props) {
-  const { classes, reverseFeed, title } = props;
-  const { data } = useChannel({ ...props,  defaultData: [] });
+  const { classes, reverseFeed, title, titleVariant="h5" } = props;
+  const { data, clearData } = useChannel({ ...props,  defaultData: [] });
 
   const mapper = reverseFeed ? mapRight : map;
 
@@ -99,43 +106,32 @@ function Feed(props) {
       className={classes.root}
       classes={{ paper: classes.paper }}
     >
-      <Grid
-        container
-        direction={'column'}
-      >
-        <Grid
-          item
-          style={{
-            marginBottom: 20
-          }}
-        >
-          <Label value={title} variant="h5" />
-          {title && <Divider />}
-        </Grid>
-        <Grid item style={{ flex: 1, overflow: 'auto' }}>
-          <Table>
-            <TableBody>
-              {mapper(data, (line, i) => (
-                <TableRow key={i} className={classes.tableRow}>
-                  <TableCell className={classes.tableCell}>
-                    <Label variant="body2">{new Date(line.timestamp).toLocaleString()}</Label>
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Label variant="body2" className={classes[toLower(line.level)]}>
-                      {toUpper(line.level)}
-                    </Label>
-                  </TableCell>
-                  <TableCell className={classes.tableCell}>
-                    <Label variant="body2" className={classes[toLower(line.level)]}>
-                      {line.message}
-                    </Label>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Grid>
-      </Grid>
+      <Label value={title} variant={titleVariant} />
+      {title && <Divider />}
+      <Table className={classes.table}>
+        <TableBody>
+          {mapper(data, (line, i) => (
+            <TableRow key={i} className={classes.tableRow}>
+              <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
+                <Label variant="body2">{new Date(line.timestamp).toISOString()}</Label>
+              </TableCell>
+              <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
+                <Label variant="body2" className={classes[toLower(line.level)]}>
+                  {toUpper(line.level)}
+                </Label>
+              </TableCell>
+              <TableCell className={classes.tableCell}>
+                <Label variant="body2" className={classes[toLower(line.level)]}>
+                  {line.message}
+                </Label>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <IconButton aria-label="Delete" className={classes.clearButton} onClick={clearData}>
+        <DeleteIcon fontSize="small" />
+      </IconButton>
     </Drawer>
   );
 }
