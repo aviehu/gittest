@@ -10,5 +10,5 @@ export default createMuiTheme({
   },
   typography: {
     useNextVariants: true
-  },
+  }
 });

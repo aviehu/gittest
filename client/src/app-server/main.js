@@ -9,6 +9,7 @@ import reactRender from './renderer';
 
 import App from '../main-client/src/app';
 import * as globals from '../main-client/src/globals';
+
 function run(reactElementCode) {
   const vm = new VM({
     sandbox: globals
@@ -17,7 +18,7 @@ function run(reactElementCode) {
   return vm.run(reactElementCode);
 }
 
-function addAppBar(template, { title }){
+function addAppBar(template, { title }) {
   return `<Root title="${title}">${template}</Root>`;
 }
 
@@ -40,12 +41,12 @@ async function render(appFolder) {
   return reactRender(htmlFile, <App element={run(reactElement)} options={options} />, script);
 }
 
-export default fastifyPlugin((app, options, next) => {
-  app.get('/', async (request, reply) => {
-    const authorizedApp = app.getApp(request);
+export default fastifyPlugin((router, options, next) => {
+  router.get('/', async (request, reply) => {
+    const authorizedApp = router.getApp(request);
 
     if (!authorizedApp) {
-      app.requireAuth(request, reply);
+      router.requireAuth(request, reply);
       return;
     }
 
