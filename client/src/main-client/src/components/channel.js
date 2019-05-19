@@ -1,4 +1,3 @@
-import React from 'react';
 import useChannel from '../hooks/use-channel';
 
 export default function Channel(props) {

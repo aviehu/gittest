@@ -1,25 +1,15 @@
 import map from 'lodash/map';
-import reduceRight from 'lodash/reduceRight';
 import toLower from 'lodash/toLower';
 import toUpper from 'lodash/toUpper';
 import React from 'react';
 import classNames from 'classnames';
 import { Drawer, Divider, Table, TableBody, TableCell, TableRow, IconButton, withStyles } from '@material-ui/core';
 import { blue, red, grey, yellow } from '@material-ui/core/colors';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 import useChannel from '../hooks/use-channel';
 import Label from './label';
-
-function mapRight(collection, iteratee) {
-  return reduceRight(
-    collection,
-    (acc, ...rest) => {
-      acc.push(iteratee(...rest));
-      return acc;
-    },
-    []
-  );
-}
+import mapRight from '../lodash-ext/mapRight';
 
 const drawerHeight = 200;
 const shades = { dark: 200, light: 500 };
@@ -33,7 +23,7 @@ function getShade(theme) {
 }
 
 const styles = theme => ({
-  root: { overflow: 'auto', height: drawerHeight, flexShrink: 0, },
+  root: { overflow: 'auto', height: drawerHeight, flexShrink: 0 },
   paper: {
     opacity: 0.9,
     height: drawerHeight,
@@ -45,19 +35,13 @@ const styles = theme => ({
     '&::-webkit-scrollbar': {
       width: 10
     },
-
-    /* Track */
     '&::-webkit-scrollbar-track': {
       background: '#424242',
       borderLeft: '1px solid #888'
     },
-
-    /* Handle */
     '&::-webkit-scrollbar-thumb': {
       background: '#888'
     },
-
-    /* Handle on hover */
     '&::-webkit-scrollbar-thumb:hover': {
       background: '#555'
     }
@@ -74,40 +58,34 @@ const styles = theme => ({
   error: {
     color: red[getShade(theme)]
   },
-  table: {
-  },
+  table: {},
   tableRow: {
     height: 20
   },
   tableCell: {
     padding: 0,
-    paddingRight: theme.spacing.unit*2,
+    paddingRight: theme.spacing.unit * 2,
     border: 0
   },
   noStretch: {
-    width: "1%",
-    whiteSpace: "nowrap",
+    width: '1%',
+    whiteSpace: 'nowrap'
   },
   clearButton: {
-    position: "fixed",
+    position: 'fixed',
     bottom: 0,
-    right: theme.spacing.unit,
+    right: theme.spacing.unit
   }
 });
 
 function Feed(props) {
-  const { classes, reverseFeed, title, titleVariant="h5" } = props;
-  const { data, clearData } = useChannel({ ...props,  defaultData: [] });
+  const { classes, reverseFeed, title, titleVariant = 'h5' } = props;
+  const { data, clearData } = useChannel({ ...props, defaultData: [] });
 
   const mapper = reverseFeed ? mapRight : map;
 
   return (
-    <Drawer
-      anchor="bottom"
-      variant="permanent"
-      className={classes.root}
-      classes={{ paper: classes.paper }}
-    >
+    <Drawer anchor="bottom" variant="permanent" className={classes.root} classes={{ paper: classes.paper }}>
       <Label value={title} variant={titleVariant} />
       {title && <Divider />}
       <Table className={classes.table}>

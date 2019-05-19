@@ -15,9 +15,7 @@ const styles = () => ({
 
 function App({ element, classes }) {
   useKeyboard('KeyL', { isAlt: true }, logout);
-  return <div className={classes.theRoot}>
-    {element}
-  </div>;
+  return <div className={classes.theRoot}>{element}</div>;
 }
 
 export default withStyles(styles)(App);
