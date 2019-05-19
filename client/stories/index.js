@@ -1,19 +1,31 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Card, CardContent, CardActions, Grid } from '@material-ui/core';
+import { Card, CardContent, CardActions } from '@material-ui/core';
 import _ from 'lodash/fp';
+import uuidv1 from 'uuid/v1';
 import { LoremIpsum } from 'lorem-ipsum';
 import Button from '../src/main-client/src/components/button';
 import Label from '../src/main-client/src/components/label';
 import Led from '../src/main-client/src/components/led';
 import LinearGauge from '../src/main-client/src/components/linear-gauge';
 import Feed from '../src/main-client/src/components/feed';
+import { WebSocket, Server }  from 'mock-socket';
+
+window.WebSocket = WebSocket;
 
 const defaultChannelData = {
   data: { text: 'hello world', ledColor: false },
   actions: ['punchIt'],
   url: 'http://localhost:8080'
 };
+
+const mockServer = new Server('ws://localhost:9001');
+mockServer.on('connection', socket => {
+  socket.on('message', data => {
+    const message = JSON.parse(data);
+    socket.send(JSON.stringify({ id: uuidv1(), reqId: message.id, type: 'ack' }))
+  });
+});
 
 storiesOf('Button', module)
   .add('with text', () => <Button channel="testChannel">Hello Button</Button>)
@@ -121,5 +133,13 @@ storiesOf('Feed', module)
       message: lorem.generateSentences(1)
     }))(_.range(50, 0));
 
-    return <Feed initialChannelMessage={{ data }} />;
-  });
+    return <Feed channel="fake" initialChannelMessage={{ data }} />;
+  }).add('using data & title', () => {
+  const data = _.map(i => ({
+    timestamp: new Date().toISOString(),
+    level: classifications[i % 4],
+    message: lorem.generateSentences(1)
+  }))(_.range(50, 0));
+
+  return <Feed channel="fake" initialChannelMessage={{ data }} title="Logs"/>;
+});;
