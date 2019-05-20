@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
 
 import TargetUrlCard from '../TargetUrlCard';
 import BodyDataPreview from '../BodyDataPreview';
 import { backupOutgoingMessageHistory } from '../../localStorage/outgoingMessageHistory';
 import BodyFormCard from '../BodyFormCard';
-import IncomingMessagesPreviewCard from '../IncomingMessagesPreviewCard';
-import OutgoingMessagesPreviewCard from '../OutgoingMessagesPreviewCard';
 import publishToServer from '../../api/publish';
 import AppBar from '../AppBar';
 import backupUrl from '../../localStorage/backupUrl';
@@ -99,26 +91,6 @@ function PostSim({ classes }) {
         </Grid>
         <Grid item xs={6}>
           <BodyDataPreview value={body} />
-        </Grid>
-        <Grid item xs={12}>
-          <Card className={classes.card}>
-            <CardContent className={classes.cardContent}>
-              <Tabs value={selectedTab} onChange={(event, value) => setSelectedTab(value)}>
-                <Tab label="Outgoing Messages" />
-                <Tab label="Incoming Messages" />
-                <div style={{ flex: 1, justifyContent: 'flex-end', display: 'flex' }}>
-                  <IconButton
-                    aria-label="Delete"
-                    onClick={handleDeleteHistory}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </div>
-              </Tabs>
-              {selectedTab === 0 && <OutgoingMessagesPreviewCard messages={outgoingMessages} />}
-              {selectedTab === 1 && <IncomingMessagesPreviewCard messages={incomingMessages} />}
-            </CardContent>
-          </Card>
         </Grid>
       </Grid>
     </div>
