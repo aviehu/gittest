@@ -5,7 +5,7 @@ set -e
 dir=./clone
 repo_src=git@github.com:roeeyud/pubui.git
 repo_trg=git@github.com:roeeyud/pubui-release.git
-src_branch=master
+src_branch=test
 
 repo_src_url=$repo_src
 repo_trg_url=$repo_trg
@@ -24,8 +24,7 @@ git init
 git add .
 git commit -m "Release"
 git remote add origin $repo_trg_url
-
 echo "Push..."
-git push -u origin master
+git push -u --force origin master
 
 rm -rf ./clone
