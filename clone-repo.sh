@@ -26,5 +26,5 @@ git commit -m "Release"
 git remote add origin $repo_trg_url
 echo "Push..."
 git push -u --force origin master
-
-rm -rf ./clone/*
+cd -
+rm -rf ./clone
