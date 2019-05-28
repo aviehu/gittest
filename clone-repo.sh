@@ -28,4 +28,4 @@ git remote add origin $repo_trg_url
 echo "Push..."
 git push -u origin master
 
-rm -rf ./clones
+rm -rf ./clone
