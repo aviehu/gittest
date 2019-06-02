@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as globals from './globals';
-import start from '../../ssr/client';
+import start from '../ssr/client';
 
 import App from './app';
 
