@@ -11,7 +11,7 @@ function Root({ children, title }) {
       <MaterialAppBar
         position="static"
         style={{
-          backgroundImage: 'url(/images/appbar.jpg)',
+          backgroundImage: 'url(./images/appbar.jpg)',
           backgroundSize: 'cover',
           backgroundPostion: 'center'
         }}
@@ -20,7 +20,7 @@ function Root({ children, title }) {
           <img
             // className={classes.icon}
             style={{ marginLeft: -12, marginRight: 20 }}
-            src="/images/logo.png"
+            src="./images/logo.png"
             alt="app logo logo"
             height="40px"
           />
