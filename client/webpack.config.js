@@ -1,28 +1,30 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const _ = require("lodash/fp");
 
 const APP_DIR = path.resolve(__dirname, './src');
-const BUILD_DIR = path.resolve('./dist');
+const BUILD_DIR = path.resolve(__dirname, './dist');
+
+const apps = { login: 'login.html', main: 'index.html' };
 
 module.exports = {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   context: APP_DIR,
-  entry: `./${process.env.ENTRY || 'index'}.js`,
+  entry: _.fromPairs(_.map((app) => [app, `./${app}-client/${process.env.ENTRY || 'index'}.js`], _.keys(apps))),
   output: {
     path: BUILD_DIR,
-    filename: 'index.js'
+    filename: '[name].js'
   },
   resolve: {
     extensions: ['.js', '.jsx']
   },
   devServer: {
-    port: 8001,
+    port: 8000,
     historyApiFallback: {
       verbose: true,
       disableDotRule: true,
-      rewrites: [{ from: /index\.js$/, to: '/index.js' }, { from: /index\.js.map$/, to: '/index.js.map' }]
     }
   },
   module: {
@@ -44,10 +46,11 @@ module.exports = {
       }
     ]
   },
-  plugins: [
+  plugins: _.map((app) =>
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: `${APP_DIR}/index.html`
-    })
-  ]
+      filename: apps[app],
+      inject: true,
+      template: `${APP_DIR}/${app}-client/index.html`,
+      chunks: [app]
+    }), _.keys(apps))
 };

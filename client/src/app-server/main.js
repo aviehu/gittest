@@ -7,8 +7,8 @@ import { VM } from 'vm2';
 
 import reactRender from './renderer';
 
-import App from '../main-client/src/app';
-import * as globals from '../main-client/src/globals';
+import App from '../main-client/app';
+import * as globals from '../main-client/globals';
 
 function run(reactElementCode) {
   const vm = new VM({

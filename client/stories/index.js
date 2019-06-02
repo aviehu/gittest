@@ -4,12 +4,12 @@ import { Card, CardContent, CardActions } from '@material-ui/core';
 import _ from 'lodash/fp';
 import uuidv1 from 'uuid/v1';
 import { LoremIpsum } from 'lorem-ipsum';
-import Button from '../src/main-client/src/components/button';
-import Label from '../src/main-client/src/components/label';
-import Led from '../src/main-client/src/components/led';
-import LinearGauge from '../src/main-client/src/components/linear-gauge';
-import Feed from '../src/main-client/src/components/feed';
-import { WebSocket, Server }  from 'mock-socket';
+import Button from '../src/main-client/components/button';
+import Label from '../src/main-client/components/label';
+import Led from '../src/main-client/components/led';
+import LinearGauge from '../src/main-client/components/linear-gauge';
+import Feed from '../src/main-client/components/feed';
+import { WebSocket, Server } from 'mock-socket';
 
 window.WebSocket = WebSocket;
 

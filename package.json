@@ -4,7 +4,9 @@
     "lodash": "^4.17.11"
   },
   "scripts": {
+    "clean": "lerna run clean --parallel",
     "start": "lerna run start --parallel",
+    "start:dev": "lerna run start:dev --parallel",
     "sim": "bash ./sim.sh"
   },
   "workspaces": [

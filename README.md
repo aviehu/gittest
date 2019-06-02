@@ -1,12 +1,20 @@
 # PubU(i)
 
-### Install
-*Requires `yarn` and `NodeJS`*
+### Prerequisites
+*Requires `yarn` and `NodeJS version 12`*
 
+### Installation 
 Run `yarn`
 
-### Run servers
+This step install's both the api and client side dependencies. And lerna at the root which manages the monorepo. 
+
+### Run servers in development mode
+Run `yarn start:dev`
+
+### Build and Run in production mode
 Run `yarn start`
 
-### Run Dev Tool
+### Run the simulation tool
 Run `yarn sim`
+
+

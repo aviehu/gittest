@@ -7,7 +7,7 @@ import React from 'react';
 import map from 'lodash/map';
 
 import reactRender from './renderer';
-import LoginApp from '../login-client/src/app';
+import LoginApp from '../login-client/app';
 
 const USER_DIRECTORY_PATH = env.get('USER_DIRECTORY_PATH', './apps').asString();
 
