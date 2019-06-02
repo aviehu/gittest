@@ -1,6 +1,7 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const _ = require("lodash/fp");
 
 const APP_DIR = path.resolve(__dirname, './src');
@@ -41,16 +42,18 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(gif|png|wav|ico|eot|svg|ttf|woff|woff2)$/,
-        use: 'file-loader?name=[name].[ext]'
+        test: /\.(gif|png|jpg|wav|ico|eot|svg|ttf|woff|woff2)$/,
+        use: ['file-loader']
       }
     ]
   },
-  plugins: _.map((app) =>
+  plugins: [
+  new CopyPlugin([{ from: "public", to: "." }]),
+  ..._.map((app) =>
     new HtmlWebpackPlugin({
       filename: apps[app],
       inject: true,
       template: `${APP_DIR}/${app}-client/index.html`,
       chunks: [app]
-    }), _.keys(apps))
+    }), _.keys(apps))]
 };
