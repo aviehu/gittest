@@ -1,9 +1,12 @@
 import { promises as fs } from 'fs';
 
+import env from 'env-var';
 import { transformAsync } from '@babel/core';
 import fastifyPlugin from 'fastify-plugin';
 import React from 'react';
 import { VM } from 'vm2';
+
+const WEBSOCKET_SERVER_URL = env.get('WEBSOCKET_SERVER_URL', 'ws://localhost:9001').asString();
 
 import reactRender from './renderer';
 
@@ -34,7 +37,10 @@ async function render(appFolder) {
 
   const reactElement = (await transformAsync(template, babelConfig)).code;
 
-  const clientCode = `window.__TEMPLATE__ = ${reactElement}`;
+  const clientCode = `
+  window.__TEMPLATE__ = ${reactElement};
+  window.WEBSOCKET_SERVER_URL = "${WEBSOCKET_SERVER_URL}";
+  `;
 
   const script = `<script type="text/javascript">${clientCode}</script>`;
 

@@ -11,7 +11,7 @@ function getSocket() {
 }
 
 function createSocket(
-  url = 'ws://localhost:9001',
+  url = window.WEBSOCKET_SERVER_URL,
   onError = error => {
     console.error(error);
   }
