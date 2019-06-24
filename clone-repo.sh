@@ -5,7 +5,7 @@ set -e
 dir=./clone
 repo_src=git@github.com:roeeyud/pubui.git
 repo_trg=git@github.com:roeeyud/pubui-release.git
-src_branch=test
+src_branch=master
 
 repo_src_url=$repo_src
 repo_trg_url=$repo_trg
