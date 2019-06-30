@@ -60,11 +60,18 @@ function install() {
     })
 }
 
+function removeTemp() {
+    del(['./pack/temp/**']);
+    console.log('api NM deleted');
+}
+
 async function pack() {
     await makeFolder();
     await copyFolders();
     //await removeNM();
     //await install();
+    //await zip();
+    //await removeTemp();
 }
 
 pack();
