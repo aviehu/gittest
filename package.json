@@ -1,19 +1,20 @@
 {
   "private": true,
   "dependencies": {
-    "api": "file:pack/temp/api",
     "del": "^4.1.1",
     "gzipper": "^2.8.0",
     "lodash": "^4.17.11",
     "ncp": "^2.0.0",
-    "npm": "^6.9.2"
+    "npm": "^6.9.2",
+    "targz": "^1.0.1"
   },
   "scripts": {
     "clean": "lerna run clean --parallel",
     "start": "lerna run start --parallel",
     "start:dev": "lerna run start:dev --parallel",
     "sim": "bash ./sim.sh",
-    "package": "node ./pack/pack.js"
+    "package": "node ./pack/pack.js",
+    "unpack": "node ./pack/unpack.js"
   },
   "workspaces": [
     "client",
