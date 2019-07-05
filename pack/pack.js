@@ -19,6 +19,8 @@ async function makeFolder() {
          console.log('api folder created');
         await mkdir('./pack/temp/client');
          console.log('client folder created');
+        await mkdir('./pack/temp/node_modules');
+         console.log('node_modules folder created');
     } catch (err) {
         throw err;
     } 
@@ -26,10 +28,18 @@ async function makeFolder() {
 
 async function copyFolders(){
     try {
+        console.log('copying api to temp folder...')
         await asyncNcp('./api', './pack/temp/api')
-        console.log('api folder copied')
+        console.log('api folder copied!')
+        console.log('copying api to temp folder...')
         await asyncNcp('./client', './pack/temp/client')
-        console.log('client folder copied')
+        console.log('client folder copied!')
+
+        //cant find a way around copying node_modules for building client - also takes the most time
+
+        console.log('copying node_modules...')
+        await asyncNcp('./node_modules', './pack/temp/node_modules')
+        console.log('node_modules copied!')
     } catch (err) {
         throw err;
     }
@@ -38,10 +48,9 @@ async function copyFolders(){
 
 async function removeNM() {
     try {
+        console.log('removing api node_modules...');
         await del(['./pack/temp/api/node_modules/**']);
-        console.log('api NM deleted');
-        await del(['./pack/temp/client/node_modules/**']);
-        console.log('client NM deleted');
+        console.log('api node_modules deleted!');
     } catch (err) {
         throw err;
     }
@@ -50,10 +59,21 @@ async function removeNM() {
 
 async function install() {
     try {
-       await asyncExec('cd ./pack/temp/api && yarn install')
-       console.log('api has been installed')
-       await asyncExec('cd ./pack/temp/client && yarn install && yarn build:clients && yarn build:server')
-       console.log('client has been installed')
+       console.log('installing api...')
+       await asyncExec('cd ./pack/temp/api && npm install --only=prod')
+       console.log('api has been installed!')
+       console.log('building client...')
+       await asyncExec('cd ./pack/temp/client && yarn build:clients && yarn build:server')
+       console.log('client has been built!')
+       console.log('removing client node_modules...');
+       await del(['./pack/temp/client/node_modules/**']);
+       console.log('client node_modules deleted!');
+       console.log('installing client...')
+       await asyncExec('cd ./pack/temp/client &&  npm install --only=prod')
+       console.log('client has been installed!')
+       console.log('removing node_modules...');
+       await del(['./pack/temp/node_modules/**']);
+       console.log('node_modules deleted!');
     } catch (err) {
         throw err;
     }
@@ -61,11 +81,12 @@ async function install() {
 
     async function zip() {
         try {
+            console.log('packing project...')
             await asyncTargz({
                 src: './pack/temp',
                 dest: './pack/packed/packed.tar.gz'
             })
-            console.log('finished packing project')
+            console.log('finished packing project!')
         } catch (err) {
             throw err;
         }
@@ -73,10 +94,11 @@ async function install() {
 
 async function deleteTemp(){
     try {
-    await del(['./pack/temp/**']);
-    console.log('temp folder deleted');
-    } catch (err) {
-        throw err;
+        console.log('cleaning up...');
+        await del(['./pack/temp/**']);
+        console.log('packing complete!');
+        } catch (err) {
+            throw err;
     }
 }
 

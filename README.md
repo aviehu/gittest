@@ -17,4 +17,9 @@ Run `yarn start`
 ### Run the simulation tool
 Run `yarn sim`
 
+### packing project
+Run `yarn package`
 
+it will create a packed file in `pubui/pack/packed/packed.tar.gz`
+make sure you have pack/packed folder and no pack/temp folder
+also make sure you rename / remove earlier packed.tar.gz
