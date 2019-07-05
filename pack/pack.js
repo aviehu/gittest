@@ -50,9 +50,9 @@ async function removeNM() {
 
 async function install() {
     try {
-       await asyncExec('cd ./pack/temp/api && yarn')
+       await asyncExec('cd ./pack/temp/api && yarn install')
        console.log('api has been installed')
-       await asyncExec('cd ./pack/temp/client && yarn')
+       await asyncExec('cd ./pack/temp/client && yarn install && yarn build:clients && yarn build:server')
        console.log('client has been installed')
     } catch (err) {
         throw err;
@@ -63,7 +63,7 @@ async function install() {
         try {
             await asyncTargz({
                 src: './pack/temp',
-                dest: './pack/packed/packed'
+                dest: './pack/packed/packed.tar.gz'
             })
             console.log('finished packing project')
         } catch (err) {

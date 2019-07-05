@@ -5,7 +5,7 @@ const asyncTargz = util.promisify(targz.decompress)
 async function unpack() {
     try {
         await asyncTargz({
-            src: './pack/packed/packed',
+            src: './pack/packed/packed.tar.gz',
             dest: './pack/unpacked'
         })
         console.log('finished unpacking project')
