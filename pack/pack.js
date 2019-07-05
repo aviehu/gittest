@@ -19,6 +19,8 @@ async function makeFolder() {
          console.log('api folder created');
         await mkdir('./pack/temp/client');
          console.log('client folder created');
+        await mkdir('./pack/temp/forpacking');
+         console.log('forpacking folder created');
     } catch (err) {
         throw err;
     } 
@@ -52,6 +54,8 @@ async function install() {
     try {
        await asyncExec('cd ./pack/temp/api && yarn install')
        console.log('api has been installed')
+       await asyncExec('cd ./pack/temp/api && yarn build')
+       console.log('api built')
        await asyncExec('cd ./pack/temp/client && yarn install && yarn build:clients && yarn build:server')
        console.log('client has been installed')
     } catch (err) {
@@ -61,8 +65,9 @@ async function install() {
 
     async function zip() {
         try {
+            await asyncNcp('./api/dist/bundle.js', './pack/temp/forpacking')
             await asyncTargz({
-                src: './pack/temp',
+                src: './pack/forpacking',
                 dest: './pack/packed/packed.tar.gz'
             })
             console.log('finished packing project')
