@@ -1,0 +1,6 @@
+#!/bin/bash
+tar -xzf $HOME/temp/lib/pubui_1.tar.gz -C $HOME/pubUI && chmod -R a+rX $HOME/pubUI
+mv $HOME/temp/lib/start.sh $HOME/pubUI
+chmod 774 $HOME/pubUI/start.sh
+chmod +x $HOME/pubUI/start.sh
+rm -rf $HOME/temp

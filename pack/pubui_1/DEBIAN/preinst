@@ -1,0 +1,4 @@
+#!/bin/bash
+mkdir $HOME/temp
+mkdir $HOME/pubUI
+dpkg -x $HOME/pubui_1.deb $HOME/temp
