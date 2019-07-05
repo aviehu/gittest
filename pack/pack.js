@@ -34,12 +34,6 @@ async function copyFolders(){
         console.log('copying api to temp folder...')
         await asyncNcp('./client', './pack/temp/client')
         console.log('client folder copied!')
-
-        //cant find a way around copying node_modules for building client - also takes the most time
-
-        console.log('copying node_modules...')
-        await asyncNcp('./node_modules', './pack/temp/node_modules')
-        console.log('node_modules copied!')
     } catch (err) {
         throw err;
     }
@@ -63,7 +57,7 @@ async function install() {
        await asyncExec('cd ./pack/temp/api && npm install --only=prod')
        console.log('api has been installed!')
        console.log('building client...')
-       await asyncExec('cd ./pack/temp/client && yarn build:clients && yarn build:server')
+       await asyncExec('cd ./pack/temp/client && webpack && babel src --out-dir dist/app')
        console.log('client has been built!')
        console.log('removing client node_modules...');
        await del(['./pack/temp/client/node_modules/**']);
@@ -71,9 +65,6 @@ async function install() {
        console.log('installing client...')
        await asyncExec('cd ./pack/temp/client &&  npm install --only=prod')
        console.log('client has been installed!')
-       console.log('removing node_modules...');
-       await del(['./pack/temp/node_modules/**']);
-       console.log('node_modules deleted!');
     } catch (err) {
         throw err;
     }
