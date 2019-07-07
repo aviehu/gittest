@@ -24,7 +24,6 @@
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.7.1",
     "nodemon": "^1.18.11",
-    "npm-install-webpack-plugin": "^4.0.5",
     "prettier": "^1.17.0",
     "wait-for-expect": "^1.1.1"
   },
