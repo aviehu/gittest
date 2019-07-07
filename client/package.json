@@ -13,12 +13,9 @@
     "start:server:dev": "nodemon",
     "start": "yarn run build:clients && yarn run build:server && yarn run start:server",
     "start:dev": "concurrently 'yarn run start:clients' 'yarn run start:server:dev'",
-    "storybook": "start-storybook",
-    "bundle:server": "babel src --out-dir dist/app && webpack --config server-webpack.config.js"
+    "storybook": "start-storybook"
   },
   "dependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-react": "7.0.0",
     "@material-ui/core": "3.9.3",
     "@material-ui/icons": "3.0.2",
     "cheerio": "^1.0.0-rc.3",
