@@ -11,18 +11,26 @@ const asyncNcp = util.promisify(ncp);
 const asyncExec = util.promisify(exec);
 const asyncTargz = util.promisify(targz.compress)
 
+async function safeMakeDir(path) {
+    try {
+        await mkdir(path);
+    } catch {
+        await del([`${path}/**`]);
+        await mkdir(path);
+    }
+}
 
 async function makeFolder() {
     try {
-        await mkdir('./pack/temp');
+        await safeMakeDir('./pack/temp');
          console.log('temp folder created');
-        await mkdir('./pack/temp/api');
+        await safeMakeDir('./pack/temp/api');
          console.log('api folder created');
-        await mkdir('./pack/temp/client');
+        await safeMakeDir('./pack/temp/client');
          console.log('client folder created');
-        await mkdir('./pack/temp/node_modules');
+        await safeMakeDir('./pack/temp/node_modules');
          console.log('node_modules folder created');
-        await mkdir('./dist');
+        await safeMakeDir('./dist');
          console.log('dist folder created');
     } catch (err) {
         throw err;
