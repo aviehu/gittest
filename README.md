@@ -20,6 +20,14 @@ Run `yarn sim`
 ### packing project
 Run `yarn package`
 
-it will create a packed file in `pubui/pack/packed/packed.tar.gz`
+it will create a packed file in `pubui/pack/packed/pubui.tar.gz`
 make sure you have pack/packed folder and no pack/temp folder
-also make sure you rename / remove earlier packed.tar.gz
+also make sure you rename / remove earlier pubui.tar.gz
+
+### unpacking project
+Run `tar -xzvf path/to/pubui.tar.gz -C path/to/unpacked/folders`
+
+### starting servers after unpacking
+in the diractory containing both the api and client folder run:
+`NODE_ENV=production node api/src/index.js & node client/dist/app/app-server/index.js`
+

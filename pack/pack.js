@@ -75,7 +75,7 @@ async function install() {
             console.log('packing project...')
             await asyncTargz({
                 src: './pack/temp',
-                dest: './pack/packed/packed.tar.gz'
+                dest: './pack/packed/pubui.tar.gz'
             })
             console.log('finished packing project!')
         } catch (err) {
