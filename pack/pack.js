@@ -3,6 +3,7 @@ const del = require('del');
 const util = require('util');
 const targz = require('targz');
 const ncp = require('ncp').ncp;
+const package = require('../package.json');
 const { exec } = require('child_process');
 
 const mkdir = util.promisify(fs.mkdir);
@@ -21,6 +22,8 @@ async function makeFolder() {
          console.log('client folder created');
         await mkdir('./pack/temp/node_modules');
          console.log('node_modules folder created');
+        await mkdir('./dist');
+         console.log('dist folder created');
     } catch (err) {
         throw err;
     } 
@@ -31,7 +34,7 @@ async function copyFolders(){
         console.log('copying api to temp folder...')
         await asyncNcp('./api', './pack/temp/api')
         console.log('api folder copied!')
-        console.log('copying api to temp folder...')
+        console.log('copying client to temp folder...')
         await asyncNcp('./client', './pack/temp/client')
         console.log('client folder copied!')
     } catch (err) {
@@ -75,7 +78,7 @@ async function install() {
             console.log('packing project...')
             await asyncTargz({
                 src: './pack/temp',
-                dest: './pack/packed/pubui.tar.gz'
+                dest: `./dist/pubui.${package.version}.tar.gz`
             })
             console.log('finished packing project!')
         } catch (err) {
