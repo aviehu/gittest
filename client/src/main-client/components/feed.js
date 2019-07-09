@@ -80,13 +80,13 @@ const styles = theme => ({
 
 function Feed(props) {
   const { classes, reverseFeed, title, titleVariant = 'h5' } = props;
-  const { data, clearData } = useChannel({ ...props, defaultData: [] });
+  const { data, clearData } = useChannel({ ...props, initialData: [] });
 
   const mapper = reverseFeed ? mapRight : map;
 
   return (
     <Drawer anchor="bottom" variant="permanent" className={classes.root} classes={{ paper: classes.paper }}>
-      <Label value={title} variant={titleVariant} />
+      <Label variant={titleVariant}>{title}</Label>
       {title && <Divider />}
       <Table className={classes.table}>
         <TableBody>

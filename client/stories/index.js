@@ -4,26 +4,23 @@ import { Card, CardContent, CardActions } from '@material-ui/core';
 import _ from 'lodash/fp';
 import uuidv1 from 'uuid/v1';
 import { LoremIpsum } from 'lorem-ipsum';
+import { WebSocket, Server } from 'mock-socket';
 import Button from '../src/main-client/components/button';
 import Label from '../src/main-client/components/label';
 import Led from '../src/main-client/components/led';
 import LinearGauge from '../src/main-client/components/linear-gauge';
 import Feed from '../src/main-client/components/feed';
-import { WebSocket, Server } from 'mock-socket';
 
 window.WebSocket = WebSocket;
 
-const defaultChannelData = {
-  data: { text: 'hello world', ledColor: false },
-  actions: ['punchIt'],
-  url: 'http://localhost:8080'
-};
+const defaultChannelData = { text: 'hello world', ledColor: false };
+const defaultChannelActions = ['punchIt'];
 
 const mockServer = new Server('ws://localhost:9001');
 mockServer.on('connection', socket => {
   socket.on('message', data => {
     const message = JSON.parse(data);
-    socket.send(JSON.stringify({ id: uuidv1(), reqId: message.id, type: 'ack' }))
+    socket.send(JSON.stringify({ id: uuidv1(), reqId: message.id, type: 'ack' }));
   });
 });
 
@@ -39,12 +36,18 @@ storiesOf('Button', module)
   .add('with message data', () => (
     <Button
       channel="testChannel"
-      initialChannelMessage={defaultChannelData}
+      initialChannelData={defaultChannelData}
+      initalChannelActions={defaultChannelActions}
       render={({ data }) => `Not ${data.text}`}
     />
   ))
   .add('with message data and channelProp', () => (
-    <Button channel="testChannel" channelProp="text" initialChannelMessage={defaultChannelData} />
+    <Button
+      channel="testChannel"
+      channelProp="text"
+      initialChannelData={defaultChannelData}
+      initalChannelActions={defaultChannelActions}
+    />
   ));
 
 storiesOf('Label', module)
@@ -57,7 +60,7 @@ storiesOf('Label', module)
     </Label>
   ))
   .add('with message data', () => (
-    <Label channel="testChannel" initialChannelMessage={defaultChannelData} render={({ data }) => data.text} />
+    <Label channel="testChannel" initialChannelData={defaultChannelData} render={({ data }) => data.text} />
   ))
   .add('with message data as title', () => (
     <Label
@@ -65,7 +68,7 @@ storiesOf('Label', module)
       variant="h5"
       component="h2"
       gutterBottom
-      initialChannelMessage={defaultChannelData}
+      initialChannelData={defaultChannelData}
       render={({ data }) => data.text}
     />
   ))
@@ -83,7 +86,7 @@ storiesOf('Led', module)
     <Led
       // colorOptions={{ colorPrimary: { backgroundColor: '#FFC0CB' }, colorSecondary: { backgroundColor: '#244336' } }}
       channel="testChannel"
-      initialChannelMessage={defaultChannelData}
+      initialChannelData={defaultChannelData}
       channelProp="ledColor"
     />
   ))
@@ -91,7 +94,7 @@ storiesOf('Led', module)
     <Led
       // colorOptions={{ colorPrimary: { backgroundColor: '#FFC0CB' }, colorSecondary: { backgroundColor: '#244336' } }}
       channel="testChannel"
-      initialChannelMessage={defaultChannelData}
+      initialChannelData={defaultChannelData}
       condition={({ data }) => data.text === 'hello world'}
     />
   ));
@@ -133,13 +136,14 @@ storiesOf('Feed', module)
       message: lorem.generateSentences(1)
     }))(_.range(50, 0));
 
-    return <Feed channel="fake" initialChannelMessage={{ data }} />;
-  }).add('using data & title', () => {
-  const data = _.map(i => ({
-    timestamp: new Date().toISOString(),
-    level: classifications[i % 4],
-    message: lorem.generateSentences(1)
-  }))(_.range(50, 0));
+    return <Feed channel="fake" initialChannelData={data} />;
+  })
+  .add('using data & title', () => {
+    const data = _.map(i => ({
+      timestamp: new Date().toISOString(),
+      level: classifications[i % 4],
+      message: lorem.generateSentences(1)
+    }))(_.range(50, 0));
 
-  return <Feed channel="fake" initialChannelMessage={{ data }} title="Logs"/>;
-});;
+    return <Feed channel="fake" initialChannelData={data} title="Logs" />;
+  });
