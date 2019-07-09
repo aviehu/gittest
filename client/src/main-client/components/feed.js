@@ -1,3 +1,4 @@
+import castArray from 'lodash/castArray';
 import map from 'lodash/map';
 import toLower from 'lodash/toLower';
 import toUpper from 'lodash/toUpper';
@@ -90,16 +91,20 @@ function Feed(props) {
       {title && <Divider />}
       <Table className={classes.table}>
         <TableBody>
-          {mapper(data, (line, i) => (
+          {mapper(castArray(data), (line, i) => (
             <TableRow key={i} className={classes.tableRow}>
-              <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
-                <Label variant="body2">{new Date(line.timestamp).toISOString()}</Label>
-              </TableCell>
-              <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
-                <Label variant="body2" className={classes[toLower(line.level)]}>
-                  {toUpper(line.level)}
-                </Label>
-              </TableCell>
+              {line.timestamp && (
+                <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
+                  <Label variant="body2">{new Date(line.timestamp).toISOString()}</Label>
+                </TableCell>
+              )}
+              {line.level && (
+                <TableCell className={classNames(classes.tableCell, classes.noStretch)}>
+                  <Label variant="body2" className={classes[toLower(line.level)]}>
+                    {toUpper(line.level)}
+                  </Label>
+                </TableCell>
+              )}
               <TableCell className={classes.tableCell}>
                 <Label variant="body2" className={classes[toLower(line.level)]}>
                   {line.message}

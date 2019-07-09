@@ -28,7 +28,7 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'complexity': ['error', 6],
     'max-depth': ['error', { max: 2 }],
-    'max-lines': ['error', 120],
+    'max-lines': ['error', 150],
     'max-nested-callbacks': ['error', 2],
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-use-before-define': 0, // override airbnb

@@ -1,10 +1,10 @@
-import isArray from 'lodash/isArray';
+import castArray from 'lodash/castArray';
 
 const _cache = {};
 
 export function addToCache(key, payload) {
-  if (payload.accumulate && hasInCache(key) && isArray(_cache[key].data)) {
-    _cache[key] = { ...payload, data: _cache[key].data.concat(payload.data) };
+  if (payload.accumulate && hasInCache(key)) {
+    _cache[key] = { ...payload, data: castArray(_cache[key].data).concat(castArray(payload.data)) };
     return;
   }
   _cache[key] = payload;
