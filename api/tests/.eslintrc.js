@@ -4,4 +4,4 @@ Object.assign(testConfig.rules, {
   "max-lines": "off",
   "max-nested-callbacks": [2, 7]
 });
-module.exports = testConfig
+module.exports = testConfig;

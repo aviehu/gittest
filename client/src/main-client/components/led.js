@@ -19,11 +19,12 @@ const styles = {
 };
 
 function Led(props) {
-  const { condition, ...materialProps } = props;
-  const { data, actions, value } = useChannel(props);
+  const { condition, value, ...materialProps } = props;
+  const { data, actions, channelValue } = useChannel(props);
+  const val = channelValue || value;
 
   const selection =
-    (condition && condition({ data, actions })) || (value && value.toString() === 'true') ? 'primary' : 'secondary';
+    (condition && condition({ data, actions })) || (val && val.toString() === 'true') ? 'primary' : 'secondary';
 
   return <Badge color={selection} {...materialProps} />;
 }
